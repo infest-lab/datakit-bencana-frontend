@@ -14,7 +14,7 @@ export const environment = {
   api: {
   	graphql: 'http://localhost:9000/',
     socket: 'ws://localhost:9000/graphql',
-  	key: 'jsdhjhsjhd76klluLu8rV1VmdzzD0Ba7So9KI5uKEH8Nksjdkjsd8787'
+  	key: 'jsdhjhsjhd76klluLu8rV1VmdzzD0Ba7So9KI5uKEH8Nksjdkjsd'
   }
 };
 

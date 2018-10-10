@@ -10,7 +10,7 @@ import { AppService } from '../../app.service';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
-  selector: 'app-activity',
+  selector: 'app-activity-form',
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.css']
 })

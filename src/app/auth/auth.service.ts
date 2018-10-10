@@ -125,9 +125,14 @@ export class AuthService {
       //let api = new ApiService()
       let _apollo = this.apollo;
       let user = this.userProfile;
+      let apikey = environment.api.key;
+      let context = {
+        headers: new HttpHeaders().set('X-API-KEY',`${apikey}`)
+      }
       this.getUserApi =  _apollo.watchQuery<any>({
                 query: getUser,
-                variables: { email: user.email }
+                variables: { email: user.email },
+                context: context
             })
             .valueChanges
             .subscribe( ({data}) => {              
@@ -147,7 +152,8 @@ export class AuthService {
                             updated_at: user.updated_at
                           }
                         }                     
-                    }
+                    },
+                    context: context
                 })
                .subscribe( ({data}) => {           
                   if(data.createUser){
@@ -188,6 +194,9 @@ export class AuthService {
     var user = this.getUserDetail();
     if(user) return user.userApi.id
     return null;
+  }
+  getUserToken(){
+    return localStorage.getItem('access_token');
   }
 
   encrypt(thing, isObject = false){

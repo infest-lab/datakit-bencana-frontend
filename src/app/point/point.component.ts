@@ -23,6 +23,7 @@ export class PointComponent implements OnInit, OnDestroy {
 	demandFormDisplay: boolean = false;
 	supplyFormDisplay: boolean = false;
 	activityFormDisplay: boolean = false;
+	demographyFormDisplay: boolean = false;
 
 	constructor(private route: ActivatedRoute, private appService:AppService, private authService: AuthService) { }
 
@@ -35,9 +36,7 @@ export class PointComponent implements OnInit, OnDestroy {
 	getData(){
 		this.sub = this.appService.getPoint(this.pointId).subscribe( ({data}) => {
 			this.point = data.point;
-			//console.log(data.point);
 			this.loading = false;
-			//this.subscribeToData();
 		});
 	}
 	subscribeToData(){
@@ -70,10 +69,15 @@ export class PointComponent implements OnInit, OnDestroy {
 		this.displayForm = $event;
 		this.activityFormDisplay = $event;
 	}
+	demographyForm($event){
+		this.displayForm = $event;
+		this.demographyFormDisplay = $event;
+	}
 	hideForm(){
 		this.demandForm(false);
 		this.supplyForm(false);
 		this.activityForm(false);
+		this.demographyForm(false);
 	}
 	addDemand(){
 		if(!this.authService.isLoggedIn){
@@ -86,12 +90,34 @@ export class PointComponent implements OnInit, OnDestroy {
 		}		
 	}
 	addSupply(){
-		this.hideForm();
-		this.supplyForm(true);
+		if(!this.authService.isLoggedIn){
+			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
+				return this.authService.login();
+			}
+		}else{
+			this.hideForm();
+			this.supplyForm(true);
+		}
 	}
 	addActivity(){
-		this.hideForm();
-		this.activityForm(true);
+		if(!this.authService.isLoggedIn){
+			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
+				return this.authService.login();
+			}
+		}else{
+			this.hideForm();
+			this.activityForm(true);
+		}
+	}
+	updateDemography(){
+		if(!this.authService.isLoggedIn){
+			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
+				return this.authService.login();
+			}
+		}else{
+			this.hideForm();
+			this.demographyForm(true);
+		}		
 	}
 
 }

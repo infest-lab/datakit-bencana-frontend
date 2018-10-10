@@ -19,26 +19,36 @@ export const getUser = gql`
 		}
 	}
 `;
-
 export const point = gql`
 	query point($id: ID!){
 		point(id:$id){
 			id
 			name
 		    description
+		    category
 		    contact
+		    phone
 		    address
 		    latitude
-		    longitude		    
-		    demographies{
-		      male
-		      female
-		      createdAt
-		      user{
-		      	name
-		      	email
-		      	phone
-		      }
+		    longitude
+		    notes
+		    survivors		    
+		    lastDemography{
+		      	id
+				male
+				female
+				children
+				adult
+				lansia
+				difable	      
+				verified
+				createdAt
+				modifiedAt
+				user{
+					name
+					email
+					phone
+				}
 		    }
 
 		}
@@ -109,5 +119,16 @@ export const pointActivities = gql`
 				phone
 			}
 		}
+	}
+`;
+
+export const statistik = gql`
+	query{
+		statistik{
+			pointsCount
+			demandsCount
+			suppliesCount
+			activitiesCount
+		}		
 	}
 `;

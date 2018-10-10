@@ -1,6 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" *ngIf="authService.isLoggedIn" routerLink="/dashboard">Gerak Bareng Sulteng</a>
-  <a class="navbar-brand" *ngIf="!authService.isLoggedIn"routerLink="/">Gerak Bareng Sulteng</a>
+  <a class="navbar-brand" routerLink="/">Gerak Bareng Sulteng</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -8,15 +7,12 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/titik-pengungsian">Titik Pengungsian</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/titik-posko">Titik Posko</a>
-      </li>     
+        <a class="nav-link" routerLink="/about">Tentang</a>
+      </li>          
     </ul>
     <ul class="nav justify-content-end">
       <li class="nav-item">
-        <a class="btn btn-md btn-primary text-white" *ngIf="!authService.isLoggedIn" (click)="authService.login()">Masuk/Daftar</a>
+        <a class="btn btn-md btn-primary text-white" *ngIf="!authService.isLoggedIn" (click)="authService.login()"><span class="fa fa-google"></span> Masuk untuk Kontribusi</a>
       </li>
       <li class="nav-item" *ngIf="authService.isLoggedIn"><span class="nav-link text-muted">{{authService.getUserName()}}</span></li>
       <li class="nav-item" *ngIf="authService.isLoggedIn">

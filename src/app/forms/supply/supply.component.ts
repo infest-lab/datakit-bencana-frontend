@@ -10,7 +10,7 @@ import { AppService } from '../../app.service';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
-  selector: 'app-supply',
+  selector: 'app-supply-form',
   templateUrl: './supply.component.html',
   styleUrls: ['./supply.component.css']
 })

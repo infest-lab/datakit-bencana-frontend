@@ -65,3 +65,24 @@ export const onActivityAdded = gql`
       }
     }
 `;
+export const onDemographyAdded = gql`
+    subscription onDemographyAdded{
+      demographyAdded{
+      	id
+        male
+		female
+		children
+		adult
+		lansia
+		difable	      
+        verified
+        createdAt
+        modifiedAt
+        user{
+        	name
+        	email
+        	phone
+        }
+      }
+    }
+`;

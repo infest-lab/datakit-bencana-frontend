@@ -10,7 +10,7 @@ import { AppService } from '../../app.service';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
-  selector: 'app-demand',
+  selector: 'app-demand-form',
   templateUrl: './demand.component.html',
   styleUrls: ['./demand.component.css']
 })
@@ -62,8 +62,6 @@ export class DemandComponent implements OnInit, OnChanges, OnDestroy{
 					this.success = data.addDemand.name;
 					this.form.reset();
 					this.buildForm();
-					//this.display.emit(false);
-					//this.refresh.emit(true);
 				}else{
 					this.error = 'Maaf, nampaknya terjadi masalah.';
 				}

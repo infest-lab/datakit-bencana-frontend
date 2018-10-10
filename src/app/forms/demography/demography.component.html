@@ -1,3 +1,48 @@
-<p>
-  demography works!
-</p>
+<div class="card bg-secondary text-white">
+	<div class="card-body">
+		<h4 class="card-title">Update Demografi <span (click)="cancel()" style="cursor: pointer;" class="fa fa-times pull-right"></span></h4>		
+		<div class="card-content">
+			<p *ngIf="error !== ''" class="alert alert-danger">{{error}}</p>
+			<p *ngIf="success !== ''" class="alert alert-success">#DEMOGRAPHY <strong>{{success}}</strong> dikirim</p>
+			<form [formGroup]="form">
+				<hr>
+				<h5>Berdasar jenis kelamin</h5>
+			   <div class="form-group row">
+			     <label class="col-sm-7 col-form-label" for="name">Perempuan</label>
+			     <div class="col-sm-5"><input type="number" class="form-control" id="female" formControlName="female" [ngClass]="displayFieldCss('female')"></div>
+			     
+			   </div>
+			   <div class="form-group row">
+			     <label class="col-sm-7 col-form-label" for="name">Laki-laki</label>
+			     <div class="col-sm-5"><input type="number" class="form-control" id="male" formControlName="male" [ngClass]="displayFieldCss('male')"></div>
+			     
+			   </div>
+			   <hr>
+			   <h5>Berdasar kerentanan</h5>
+			   <div class="form-group row">
+			     <label class="col-sm-7 col-form-label" for="name">Anak</label>
+			     <div class="col-sm-5">
+			     	<input type="number" class="form-control" id="children" formControlName="children" [ngClass]="displayFieldCss('children')">
+			     </div>			     
+			   </div>
+			   <div class="form-group row">
+			     <label class="col-sm-7 col-form-label" for="name">Dewasa</label>
+			     <div class="col-sm-5"><input type="number" class="form-control" id="adult" formControlName="adult" [ngClass]="displayFieldCss('adult')"></div>			     
+			   </div>
+			   <div class="form-group row">
+			     <label class="col-sm-7 col-form-label" for="name">Lansia</label>			     
+			     <div class="col-sm-5"><input type="number" class="form-control" id="lansia" formControlName="lansia" [ngClass]="displayFieldCss('lansia')"></div>
+			     
+			   </div>
+			   <div class="form-group row">
+			     <label class="col-sm-7 col-form-label" for="name">Berkebutuhan khusus</label>			     
+			     <div class="col-sm-5"><input type="number" class="form-control" id="difable" formControlName="difable" [ngClass]="displayFieldCss('difable')"></div>
+			     
+			   </div>
+			   <div class="form-group">
+			     <button class="btn btn-primary" (click)="save()"><span class="fa fa-save"></span> Simpan</button>
+			   </div>
+			</form>
+		</div>
+	</div>
+</div>

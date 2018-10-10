@@ -16,6 +16,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
+import { FullDateTimeFormatPipe } from './pipes/full-date-time-format.pipe';
 import { MatMenuModule, MatButtonModule } from '@angular/material';
 import { NoopAnimationPlayer } from '@angular/animations';
 import { AuthService } from './auth/auth.service';
@@ -33,11 +34,13 @@ import { DemographyComponent } from './forms/demography/demography.component';
 import { PointDemandsComponent } from './point/point-demands/point-demands.component';
 import { PointSuppliesComponent } from './point/point-supplies/point-supplies.component';
 import { PointActivitiesComponent } from './point/point-activities/point-activities.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DateTimeFormatPipe,
+    FullDateTimeFormatPipe,
     HomeComponent,
     CallbackComponent,
     ListPointsComponent,
@@ -49,7 +52,8 @@ import { PointActivitiesComponent } from './point/point-activities/point-activit
     DemographyComponent,
     PointDemandsComponent,
     PointSuppliesComponent,
-    PointActivitiesComponent
+    PointActivitiesComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

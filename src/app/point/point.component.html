@@ -2,13 +2,14 @@
 	<div class="row">
 		<div class="col-md-3 mt-3">
 			<div *ngIf="displayForm">
-				<app-demand *ngIf="demandFormDisplay" (display)="demandForm($event)" [pointId]="point.id"></app-demand>
-				<app-supply *ngIf="supplyFormDisplay" (display)="supplyForm($event)" (refresh)=refresh($event) [pointId]="point.id"></app-supply>
-				<app-activity *ngIf="activityFormDisplay" (display)="activityForm($event)" (refresh)=refresh($event) [pointId]="point.id"></app-activity>
+				<app-demand-form *ngIf="demandFormDisplay" (display)="demandForm($event)" [pointId]="point.id"><span class="fa fa-spinner fa-spin"></span></app-demand-form>
+				<app-supply-form *ngIf="supplyFormDisplay" (display)="supplyForm($event)" (refresh)=refresh($event) [pointId]="point.id"><span class="fa fa-spinner fa-spin"></span></app-supply-form>
+				<app-activity-form *ngIf="activityFormDisplay" (display)="activityForm($event)" (refresh)=refresh($event) [pointId]="point.id"><span class="fa fa-spinner fa-spin"></span></app-activity-form>
+				<app-demography-form *ngIf="demographyFormDisplay" (display)="demographyForm($event)" (refresh)=refresh($event) [pointId]="point.id"><span class="fa fa-spinner fa-spin"></span></app-demography-form>
 			</div>
 			<div *ngIf="!displayForm">
-				<app-list-points></app-list-points>
-			</div>	
+				<app-list-points><span class="fa fa-spinner fa-spin"></span></app-list-points>
+			</div>
 		</div>
 		<div class="col-md-9 mt-3" style="min-height:400px;">
 			<div class="card" *ngIf="point">
@@ -17,19 +18,84 @@
 					<small class="text-muted">{{point.address}}</small>
 				</div>
 				<div class="card-body">
-					<p class="card-text">{{point.notes}}</p>
+					<div class="row">
+						<div class="col-md-6">
+							<!-- <div class="card"><div class="card-body"> -->
+							<table class="table table-striped">
+								<tr>
+									<td><strong>Kategori</strong></td>
+									<td class="text-right">{{point?.category}}</td>
+								</tr>
+								<tr *ngIf="point.latitude !== ''">
+									<td><strong>Lokasi</strong></td>
+									<td class="text-right">{{point?.latitude}},{{point?.longitude}}</td>
+								</tr>
+								<tr *ngIf="point.survivors !== ''">
+									<td><strong>Jumlah pengungsi awal</strong></td>
+									<td class="text-right">{{point?.survivors}} orang</td>
+								</tr>
+								<tr *ngIf="point.phone !== ''">
+									<td><strong>Kontak</strong></td>
+									<td class="text-right">{{point?.contact}} - {{point?.phone}}</td>
+								</tr>
+								<tr *ngIf="point.notes !== ''">
+									<td><strong>Keterangan</strong></td>
+									<td class="text-right">{{point?.notes}}</td>
+								</tr>						
+							</table>
+							<!-- </div></div> -->
+						</div>
+						<div class="col-md-6">
+							<div class="card"><div class="card-body">
+								<button class="btn btn-primary btn-sm pull-right" (click)="updateDemography()">Update Demografi</button>
+								<h4>Demografi</h4>
+								<div class="mb-2 text-muted" *ngIf="point.lastDemography?.createdAt == null">Belum ada data demografi</div>
+								<div *ngIf="point.lastDemography?.createdAt !== null">
+								<p class="text-muted"><small>Update terakhir: {{point.lastDemography?.createdAt|fullDate}}</small>
+								</p>
+									<table class="table table-bordered mb-2">
+										<tr>
+											<td><strong>Laki-Laki</strong></td>
+											<td class="text-right">{{point.lastDemography?.male}}</td>
+										</tr>
+										<tr>
+											<td><strong>Perempuan</strong></td>
+											<td class="text-right">{{point.lastDemography?.female}}</td>
+										</tr>
+										<tr>
+											<td><strong>Anak</strong></td>
+											<td class="text-right">{{point.lastDemography?.children}}</td>
+										</tr>
+										<tr>
+											<td><strong>Dewasa</strong></td>
+											<td class="text-right">{{point.lastDemography?.adult}}</td>
+										</tr>
+										<tr>
+											<td><strong>Lansia</strong></td>
+											<td class="text-right">{{point.lastDemography?.lansia}}</td>
+										</tr>
+										<tr>
+											<td><strong>Berkebutuhan khusus</strong></td>
+											<td class="text-right">{{point.lastDemography?.difable}}</td>
+										</tr>
+									</table>
+								</div>
+							</div></div>
+						</div>
+					</div>	
+					<hr>
 					<div class="row">
 						<div class="col-md-4">
 							<div><a (click)="addDemand()" class="btn btn-danger btn-sm text-white mb-1"><span class="fa fa-plus fa-2x"></span></a></div>
-							<app-point-demands [pointId]="point?.id"></app-point-demands>
+							<app-point-demands [pointId]="point?.id"><span class="fa fa-spinner fa-spin"></span></app-point-demands>
 						</div>
 						<div class="col-md-4">
 							<div><a (click)="addSupply()" class="btn btn-success btn-sm text-white mb-1"><span class="fa fa-plus fa-2x"></span></a></div>
-							<app-point-supplies [pointId]="point?.id"></app-point-supplies>
+							<app-point-supplies [pointId]="point?.id"><span class="fa fa-spinner fa-spin"></span></app-point-supplies>
 						</div>
 						<div class="col-md-4">
 							<div><a (click)="addActivity()" class="btn btn-info btn-sm text-white mb-1"><span class="fa fa-plus fa-2x"></span></a></div>
-							<app-point-activities [pointId]="point?.id"></app-point-activities>
+							<app-point-activities [pointId]="point?.id"><span class="fa fa-spinner fa-spin"></span></app-point-activities>
 						</div>
 					</div>
 				</div>

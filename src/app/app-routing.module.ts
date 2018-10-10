@@ -4,6 +4,7 @@ import { CallbackComponent } from './callback.component';
 import { AuthGuard } from './auth/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { PointComponent } from './point/point.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path:'point/:id',
     component: PointComponent
+  },
+  {
+    path:'about',
+    component: AboutComponent
   },
   /*{
     path: 'dashboard', 

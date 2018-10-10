@@ -6,6 +6,7 @@ import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { map, take, debounceTime } from 'rxjs/operators';
+(window as any).global = window;
 import {} from 'jasmine';
 import { environment } from '../environments/environment';
 import { AuthService } from './auth/auth.service';
@@ -14,7 +15,8 @@ import {
 	point,
 	pointDemands,
 	pointSupplies,
-	pointActivities
+	pointActivities,
+	statistik
 } from './graphql/query';
 import {
 	addDemand,
@@ -40,12 +42,17 @@ export class AppService{
 		return this.apollo.mutate<any>(this.mergeContext(args));
 	}
 	mergeContext(args){
-		if (!this.authService.isLoggedIn) {
+		const apikey = environment.api.key;
+		const token = this.authService.getUserToken();
+		if (!this.authService.isLoggedIn) {			
+			args.context = {
+	      		headers: new HttpHeaders().set('X-API-KEY',`${apikey}`)     		
+	      	};
 	    	return args;
 	    } else {
-	      	//const token = this.authService.decrypt(localStorage.getItem('acccess_token'));
-	      	const token = localStorage.getItem('acccess_token');
-	      	args.context = {headers: new HttpHeaders().set('Authorization',`Bearer ${token}`)};
+	      	args.context = {
+	      		headers: new HttpHeaders().set('Authorization',`Bearer ${token}`).set('X-API-KEY',`${apikey}`)	      		
+	      	};
 	       	return  args;
 	    }
 	}
@@ -110,6 +117,12 @@ export class AppService{
 		return this.query({
 			query: pointActivities,
 			variables: { pointId: pointId }
+		})
+		.valueChanges
+	}
+	statistik(){
+		return this.query({
+			query: statistik
 		})
 		.valueChanges
 	}

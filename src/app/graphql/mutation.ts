@@ -46,7 +46,7 @@ export const addActivity = gql`
 export const addDemography = gql`
 	mutation addDemography($input:DemographyInput!){
 		addDemography(input:$input){					
-			name
+			male
 		}
 	}
 `;
