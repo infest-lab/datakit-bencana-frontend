@@ -1,0 +1,22 @@
+<div class="card bg-secondary text-white">
+	<div class="card-body">
+		<h4 class="card-title">Update Aktivitas <span (click)="cancel()" style="cursor: pointer;" class="fa fa-times pull-right"></span></h4>		
+		<div class="card-content">
+			<p *ngIf="error !== ''" class="alert alert-danger">{{error}}</p>
+			<p *ngIf="success !== ''" class="alert alert-success">#ACTIVITY <strong>{{success}}</strong> telah terkirim</p>
+			<form [formGroup]="form">
+			   <div class="form-group">
+			     <label for="name">Nama Aktivitas</label>
+			     <input type="text" class="form-control" id="name" formControlName="name" [ngClass]="displayFieldCss('name')">
+			   </div>
+			   <div class="form-group">
+			     <label for="description">Description</label>
+			     <textarea class="form-control" id="description" formControlName="description" [ngClass]="displayFieldCss('description')"></textarea>
+			   </div>
+			   <div class="form-group">
+			     <button class="btn btn-primary" (click)="save()"><span class="fa fa-save"></span> Simpan</button>
+			   </div>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,39 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-3 mt-3">
+			<div *ngIf="displayForm">
+				<app-demand *ngIf="demandFormDisplay" (display)="demandForm($event)" [pointId]="point.id"></app-demand>
+				<app-supply *ngIf="supplyFormDisplay" (display)="supplyForm($event)" (refresh)=refresh($event) [pointId]="point.id"></app-supply>
+				<app-activity *ngIf="activityFormDisplay" (display)="activityForm($event)" (refresh)=refresh($event) [pointId]="point.id"></app-activity>
+			</div>
+			<div *ngIf="!displayForm">
+				<app-list-points></app-list-points>
+			</div>	
+		</div>
+		<div class="col-md-9 mt-3" style="min-height:400px;">
+			<div class="card" *ngIf="point">
+				<div class="card-header">
+					<h4><span class="fa fa-map-marker"></span> {{point.name}}</h4>
+					<small class="text-muted">{{point.address}}</small>
+				</div>
+				<div class="card-body">
+					<p class="card-text">{{point.notes}}</p>
+					<div class="row">
+						<div class="col-md-4">
+							<div><a (click)="addDemand()" class="btn btn-danger btn-sm text-white mb-1"><span class="fa fa-plus fa-2x"></span></a></div>
+							<app-point-demands [pointId]="point?.id"></app-point-demands>
+						</div>
+						<div class="col-md-4">
+							<div><a (click)="addSupply()" class="btn btn-success btn-sm text-white mb-1"><span class="fa fa-plus fa-2x"></span></a></div>
+							<app-point-supplies [pointId]="point?.id"></app-point-supplies>
+						</div>
+						<div class="col-md-4">
+							<div><a (click)="addActivity()" class="btn btn-info btn-sm text-white mb-1"><span class="fa fa-plus fa-2x"></span></a></div>
+							<app-point-activities [pointId]="point?.id"></app-point-activities>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -3,7 +3,19 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  auth: {
+    clientID: 'DlY6tIbs5TV22Dp755NwhKEnE3gMN2Ow',
+    domain: 'gerbangsulteng.au.auth0.com',
+    responseType: 'token id_token',
+    redirectUri: 'http://localhost:4200/callback',
+    scope: 'openid profile email'
+  },
+  api: {
+  	graphql: 'http://localhost:9000/',
+    socket: 'ws://localhost:9000/graphql',
+  	key: 'jsdhjhsjhd76klluLu8rV1VmdzzD0Ba7So9KI5uKEH8Nksjdkjsd8787'
+  }
 };
 
 /*

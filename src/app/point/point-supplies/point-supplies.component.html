@@ -1,0 +1,47 @@
+<div class="list-group" style="clear:both;">
+	<div class="list-group-item bg-success text-white d-flex justify-content-between">
+		<h3>#SUPPLIES</h3>
+		<div>
+			<a style="cursor: pointer;" class ="btn btn-sm pull-right" [matMenuTriggerFor]="menu">
+				<span class="fa fa-ellipsis-v fa-2x"></span>
+			</a>
+			<div>
+			<mat-menu #menu="matMenu">
+				<button mat-menu-item>Terverifikasi</button>
+				<button mat-menu-item>Ekspor</button>              
+            </mat-menu>
+			</div>            
+		</div>		
+	</div>	
+	<div *ngIf="loading" class="list-group-item text-center">
+		<span class="fa fa-spinner fa-spin"></span>
+	</div>
+	<ng-container *ngFor="let supply of supplies; let i=index">
+	<div class="list-group-item flex-column align-items-start">
+		<a style="cursor: pointer;" class="pull-right badge badge-light" [matMenuTriggerFor]="menu">
+			<span class="fa fa-ellipsis-h text-primary"></span>
+		</a>
+        <mat-menu #menu="matMenu">
+          <div>
+            <button mat-menu-item>Set Verified</button>
+          </div>
+        </mat-menu>
+		<div class="d-flex w-100 justify-content-between">
+		  <h5 class="mb-1">{{supply.name}}</h5>
+			<div>
+				<span class="badge badge-success badge-pill">{{supply.qty}}</span> <span>{{supply.unit}}</span>
+			</div>
+		</div>
+		<div>
+			
+		</div>
+		
+		<div class="mt-2 d-flex w-100 justify-content-between text-muted">
+			<small>{{supply.user.name}}</small><small class="pull-right">{{ supply.createdAt | fromNow}}</small>			
+		</div>		
+	</div>
+	</ng-container>
+	<div *ngIf="supplies?.length == 0" class="list-group-item text-muted">
+		Belum ada data supply
+	</div>
+</div>

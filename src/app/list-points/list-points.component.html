@@ -1,0 +1,14 @@
+<div *ngIf="points">
+	<input type="text" placeholder="Ketik untuk mencari" name="search" class="form-control" (ngModel) = "querySearch" #searchQuery (keyup)="searchPoint(searchQuery.value)">				
+	<div *ngFor="let cat of points | keyvalue">
+		<div class="list-group">
+			<div class="list-group-item bg-primary text-white mt-3">
+				<h5 class="card-title"><span class="fa fa-home"></span> {{cat.key}} ({{size(cat.value)}})</h5>
+			</div>
+			<a class="list-group-item list-group-item-action" *ngFor="let point of cat.value; let i=index" routerLink="/point/{{point.id}}" style="cursor: pointer;">
+				<strong>{{i + 1}}. {{point.name}}</strong><br/>
+			  	<span class="text-muted small">{{point.address}}</span>				
+			</a>
+		</div>
+	</div>
+</div>
