@@ -7,8 +7,11 @@
 
 # dependencies
 /node_modules
-/src/environments/environment.ts
 package-lock.json
+
+# config
+/src/environments/environment.ts
+
 # IDEs and editors
 /.idea
 .project
