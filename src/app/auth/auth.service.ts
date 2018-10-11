@@ -106,7 +106,7 @@ export class AuthService {
     localStorage.removeItem('userApi');
     localStorage.removeItem('expires_at');
     this.auth0.logout({
-      returnTo: 'http://localhost:4200',
+      returnTo: environment.auth.redirectUri,
       clientID: environment.auth.clientID
     });
   }
