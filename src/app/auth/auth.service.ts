@@ -110,7 +110,7 @@ export class AuthService {
     else {
       console.error(`Error: Auth Failed`);      
     }
-    //this.router.navigate(['/home']);
+    this.router.navigate(['/home']);
     /*console.log('auth:', authResult);
     let userProfile = this.oauthService.getIdentityClaims();
     console.log('userProfile:', userProfile);
