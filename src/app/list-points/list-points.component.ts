@@ -13,9 +13,9 @@ import { _ } from 'underscore';
 export class ListPointsComponent implements OnInit, OnDestroy {
 
 	private sub: Subscription;
-  	private points: any;
+  	points: any;
 	private originPoints: any;
-	public querySearch: string;
+	querySearch: string;
 
 	constructor(private appService:AppService) { }
 

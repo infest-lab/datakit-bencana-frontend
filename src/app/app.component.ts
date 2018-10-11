@@ -10,7 +10,7 @@ import { environment } from '../environments/environment';
 export class AppComponent {
   title = 'Gerbang Sulteng';
   apiUrl = environment.api.graphql;
-  constructor(private authService: AuthService) {}
+  constructor(public authService: AuthService) {}
   ngOnInit() {
     
   }
