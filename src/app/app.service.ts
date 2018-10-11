@@ -41,20 +41,42 @@ export class AppService{
 	mutation(args){
 		return this.apollo.mutate<any>(this.mergeContext(args));
 	}
-	mergeContext(args){
-		const apikey = environment.api.key;
-		const token = this.authService.getUserToken();
-		if (!this.authService.isLoggedIn) {			
-			args.context = {
-	      		headers: new HttpHeaders().set('X-API-KEY',`${apikey}`)     		
-	      	};
-	    	return args;
+	mergeContext(args){		
+		if(typeof args.query !== undefined || typeof args.mutation !== undefined){
+			//console.log('subscription',args);
+			let apikey = environment.api.key;
+			let token = this.authService.getUserToken();
+			if (!this.authService.isLoggedIn) {			
+				args.context = {
+		      		headers: new HttpHeaders().set('datakit_api_key',`${apikey}`)     		
+		      	};
+		    	return args;
+		    } else {
+		      	args.context = {
+		      		headers: new HttpHeaders().set('authorization',`Bearer ${token}`).set('datakit_api_key',`${apikey}`)	      		
+		      	};
+		       	return  args;
+		    }
+		}
+		return args;		
+	}
+	setHeaders(){
+		let apikey = environment.api.key;
+		let token = this.authService.getUserToken();
+		let headers:any;
+		if (!this.authService.isLoggedIn) {
+			headers = {
+				'datakit_api_key': apikey
+			};
+			//headers = new HttpHeaders().set('X-API-KEY',`${apikey}`);	
 	    } else {
-	      	args.context = {
-	      		headers: new HttpHeaders().set('Authorization',`Bearer ${token}`).set('X-API-KEY',`${apikey}`)	      		
-	      	};
-	       	return  args;
+	    	headers = {
+				'datakit_api_key': apikey,
+				'authorization': `Bearer ${token}`
+			};
+	      	//headers = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('X-API-KEY',`${apikey}`);
 	    }
+	    return  headers;
 	}
 
 	/*==============================================================

@@ -29,6 +29,7 @@ export class SupplyComponent implements OnInit, OnChanges, OnDestroy{
 		this.buildForm();
 	}
 	ngOnChanges(){
+		console.log('CHANGE');
 		this.buildForm();
 	}
 	ngOnDestroy(){

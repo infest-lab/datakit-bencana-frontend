@@ -88,7 +88,8 @@ import { AboutComponent } from './about/about.component';
 export class AppModule {
 	constructor(
     apollo: Apollo,
-    httpLink: HttpLink
+    httpLink: HttpLink,
+    appService: AppService
   ) {
     // Create an http link:
     const http = httpLink.create({
@@ -99,7 +100,9 @@ export class AppModule {
     const ws = new WebSocketLink({
       uri: environment.api.socket,
       options: {
-        reconnect: true
+        reconnect: true,
+        timeout: 20000,
+        connectionParams: appService.setHeaders()
       }
     });
 

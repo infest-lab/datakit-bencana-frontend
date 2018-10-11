@@ -52,7 +52,7 @@ export class AuthService {
   }
 
   handleLoginCallback() {
-    console.log('handleLoginCallback')
+    //console.log('handleLoginCallback')
     // When Auth0 hash parsed, get profile
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken) {
@@ -157,14 +157,14 @@ export class AuthService {
                 })
                .subscribe( ({data}) => {           
                   if(data.createUser){
-                    console.log(data.createUser);
+                    //console.log(data.createUser);
                     //localStorage.setItem('userApi', this.encrypt(data.createUser, true));
                     localStorage.setItem('userApi', JSON.stringify(data.createUser));
                     this.userApi = data.createUser
                   }
                 });
               }else{
-                console.log(data.getUser);
+                //console.log(data.getUser);
                 //localStorage.setItem('userApi', this.encrypt(data.getUser, true));
                 localStorage.setItem('userApi',JSON.stringify(data.getUser));
                 this.userApi = data.getUser;

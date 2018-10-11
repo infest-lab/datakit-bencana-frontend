@@ -24,35 +24,11 @@ const routes: Routes = [
     path:'about',
     component: AboutComponent
   },
-  /*{
-    path: 'dashboard', 
-    component: DashboardComponent,
-    canActivate: [
-      AuthGuard
-    ]
-  },
-  {
-    path: 'pengaduan-publik',
-    component: PengaduanPublicComponent
-  },
-  {
-    path: 'special',
-    component: PrivateDealsComponent,
-    canActivate: [
-      AuthGuard
-    ]
-  },
-  {
-    path: 'profile',
-    component: PrivateDealsComponent,
-    canActivate: [
-      AuthGuard
-    ]
-  },*/
   {
     path: 'callback',
     component: CallbackComponent
-  }
+  },
+  {path: '**', redirectTo: '/home'}
 ];
 
 @NgModule({
