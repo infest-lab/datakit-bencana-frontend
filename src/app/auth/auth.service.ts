@@ -16,10 +16,15 @@ import { Subject, Observable, Subscription } from 'rxjs';
 import { map, take, debounceTime } from 'rxjs/operators';
 import {} from 'jasmine';
 import * as CryptoJS from 'crypto-js';
+import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
+import { AuthConfig } from 'angular-oauth2-oidc';
+import {storageFactory} from "./../../libs/storageFactory";
 
 import { environment } from './../../environments/environment';
 import { getUser } from '../graphql/query';
 import { createUser } from '../graphql/mutation';
+
+//export const localStore = storageFactory(localStorage);
 
 @Injectable()
 export class AuthService {
@@ -32,29 +37,65 @@ export class AuthService {
     redirectUri: environment.auth.redirectUri,
     scope: environment.auth.scope
   });
-  // Store authentication data
+
+  //Auth Google
+  authConfig: AuthConfig = {
+    issuer: 'https://accounts.google.com',
+    redirectUri: environment.auth.google.redirectUri,
+    clientId: environment.auth.google.clientId,
+    scope: 'openid profile email',
+    strictDiscoveryDocumentValidation: false
+  };
+
   expiresAt: number;
   userProfile: any;
   accessToken: string;
   authenticated: boolean;
-  //private apollo: Apollo;  
-  private getUserApi: Subscription;
   userApi: any;
-  //apiService: ApiService;
+  private getUserApi: Subscription;
+  public localStore = storageFactory(window.localStorage);
+  public oauthInstance:any;
 
-  constructor(private router: Router, private apollo:Apollo) {       
-    this.getAccessToken();   
+  constructor(private router: Router, private apollo:Apollo, private oauthService: OAuthService) {       
+    //this.getAccessToken();
+    //this.oauthService.configure(this.authConfig);
+
+    //this.oauthInstance = this.oauthService; 
+    this.configureWithNewConfigApi();
+  }
+  private configureWithNewConfigApi() {
+    this.oauthService.configure(this.authConfig);
+    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+    this.oauthService.loadDiscoveryDocumentAndTryLogin();
+  }
+
+  googleLogin(){
+    this.oauthService.initImplicitFlow();
   }
 
   login() {
     // Auth0 authorize request
-    this.auth0.authorize();
+    //this.auth0.authorize();
+    this.oauthService.initImplicitFlow();
+  }
+
+  getParamsObjectFromHash() {
+    const hash = window.location.hash ? window.location.hash.split('#') : [];
+    let toBeReturned = {};
+    if (hash.length && hash[1].split('&').length) {
+      toBeReturned = hash[1].split('&').reduce((acc, x) => {
+        const hello = x.split('=');
+        if (hello.length === 2) acc[hello[0]] = hello[1];
+          return acc;
+      }, {});
+    }
+    return Object.keys(toBeReturned).length ? toBeReturned : null;
   }
 
   handleLoginCallback() {
     //console.log('handleLoginCallback')
     // When Auth0 hash parsed, get profile
-    this.auth0.parseHash((err, authResult) => {
+    /*this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken) {
         window.location.hash = '';
         this.getUserInfo(authResult);
@@ -62,7 +103,18 @@ export class AuthService {
         console.error(`Error: ${err.error}`);
       }
       this.router.navigate(['/home']);
-    });
+    });*/
+
+    let authResult = this.getParamsObjectFromHash();
+    if(authResult) this.getUserInfo(authResult);
+    else {
+      console.error(`Error: Auth Failed`);      
+    }
+    //this.router.navigate(['/home']);
+    /*console.log('auth:', authResult);
+    let userProfile = this.oauthService.getIdentityClaims();
+    console.log('userProfile:', userProfile);
+    this.router.navigate(['/home']);*/
   }
 
   getAccessToken() {
@@ -75,50 +127,73 @@ export class AuthService {
 
   getUserInfo(authResult) {
     // Use access token to retrieve user's profile and set session
-    this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
+    /*this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
       if (profile) {        
         this._setSession(authResult, profile);
       }
-    });
+    });*/
+    let userProfile = this.oauthService.getIdentityClaims();
+    if(userProfile) this._setSession(authResult, userProfile); 
+    else {
+      console.error('No userProfile');
+      //this.router.navigate(['/home']);
+    }
   }
 
   private _setSession(authResult, profile) {
     // Save authentication data and update login status subject
-    this.expiresAt = authResult.expiresIn * 1000 + Date.now();
-    this.accessToken = authResult.accessToken;
+    console.log('authResult:',authResult);
+    console.log('userProfile:',profile);
+    this.expiresAt = authResult.expires_in * 1000 + Date.now();
+    this.accessToken = authResult.access_token;
     this.userProfile = profile;
     this.authenticated = true;
     this.findOrCreateUser();
-    //console.log('userApi:',this.userApi);
+    
     //localStorage.setItem('access_token', this.encrypt(authResult.accessToken, false));
     //localStorage.setItem('profile', this.encrypt(profile, true));
-    localStorage.setItem('access_token', authResult.accessToken);
-    //localStorage.setItem('profile', profile);
-    localStorage.setItem('expires_at', this.expiresAt.toString());
+    /*localStorage.setItem('access_token', authResult.accessToken);
+    localStorage.setItem('expires_at', this.expiresAt.toString());*/
+    this.localStore.setItem('access_token', authResult.access_token);
+    this.localStore.setItem('expires_at', JSON.stringify(this.expiresAt));
+    
   }
 
   logout() {
     // Log out of Auth0 session
     // Ensure that returnTo URL is specified in Auth0
     // Application settings for Allowed Logout URLs
-    localStorage.removeItem('access_token');
-    //localStorage.removeItem('profile');
+    /*localStorage.removeItem('access_token');
     localStorage.removeItem('userApi');
-    localStorage.removeItem('expires_at');
-    this.auth0.logout({
-      returnTo: environment.auth.redirectUri,
+    localStorage.removeItem('expires_at');*/
+    this.localStore.removeItem('access_token');
+    this.localStore.removeItem('expires_at');
+    this.localStore.removeItem('userApi');
+    
+    /*this.auth0.logout({
+      returnTo: environment.auth.redirectAfterLogoutUri,
       clientID: environment.auth.clientID
-    });
+    });*/
+    this.oauthService.logOut();
+    this.router.navigate(['/home']);
   }
 
   get isLoggedIn(): boolean {
     // Check if current date is before token
     // expiration and user is signed in locally
     //return (Date.now() < this.expiresAt) && this.authenticated;
-    let expiresAt = JSON.parse(localStorage.getItem('expires_at') || '{}');
+    if(this.expiresAt){
+      //console.log(this.expiresAt)
+      return (Date.now() < this.expiresAt) && this.authenticated;
+    }else{
+      let expiresAt = JSON.parse(this.localStore.getItem('expires_at') || '{}');
+      //console.log(expiresAt)
+      return new Date().getTime() < expiresAt;
+    }
+    
     //console.log('Date:',new Date().getTime());
     //console.log('Expires:',expiresAt)
-    return new Date().getTime() < expiresAt;
+    
   }
 
   findOrCreateUser(){
@@ -127,7 +202,7 @@ export class AuthService {
       let user = this.userProfile;
       let apikey = environment.api.key;
       let context = {
-        headers: new HttpHeaders().set('X-API-KEY',`${apikey}`)
+        headers: new HttpHeaders().set('datakit_api_key',`${apikey}`)
       }
       this.getUserApi =  _apollo.watchQuery<any>({
                 query: getUser,
@@ -159,44 +234,40 @@ export class AuthService {
                   if(data.createUser){
                     //console.log(data.createUser);
                     //localStorage.setItem('userApi', this.encrypt(data.createUser, true));
-                    localStorage.setItem('userApi', JSON.stringify(data.createUser));
+                    this.localStore.setItem('userApi', JSON.stringify(data.createUser));
                     this.userApi = data.createUser
                   }
                 });
               }else{
                 //console.log(data.getUser);
                 //localStorage.setItem('userApi', this.encrypt(data.getUser, true));
-                localStorage.setItem('userApi',JSON.stringify(data.getUser));
+                this.localStore.setItem('userApi',JSON.stringify(data.getUser));
                 this.userApi = data.getUser;
               }
             });
   }
   getUserDetail(){
-    var user = {
-      //profile: this.decrypt(localStorage.getItem('profile'), true),
-      //userApi: this.decrypt(localStorage.getItem('userApi'), true)
-      //profile: localStorage.getItem('userProfile'),
-      userApi: JSON.parse(localStorage.getItem('userApi'))
-    }
+    let user = (this.userApi) ? this.userApi : JSON.parse(this.localStore.getItem('userApi'));
+    
     return user;
   }
   getUserAvatar(){
     var user = this.getUserDetail();
-    if(user) return user.userApi.profile.picture;
+    if(user && typeof user.profile.picture !== 'undefined') return user.profile.picture;
     return null;
   }
-  getUserName(){
+  public getUserName(){
     var user = this.getUserDetail();
-    if(user) return user.userApi.name;
+    if(user && typeof user.name !== 'undefined') return user.name;
     return null;
   }
   getUserId(){
     var user = this.getUserDetail();
-    if(user) return user.userApi.id
+    if(user && typeof user.id !== 'undefined') return user.id
     return null;
   }
   getUserToken(){
-    return localStorage.getItem('access_token');
+    return (this.accessToken) ? this.accessToken : this.localStore.getItem('access_token');
   }
 
   encrypt(thing, isObject = false){

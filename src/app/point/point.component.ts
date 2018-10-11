@@ -80,7 +80,7 @@ export class PointComponent implements OnInit, OnDestroy {
 		this.demographyForm(false);
 	}
 	addDemand(){
-		if(!this.authService.isLoggedIn){
+		if(this.authService.isLoggedIn){
 			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
 				return this.authService.login();
 			}
@@ -90,7 +90,7 @@ export class PointComponent implements OnInit, OnDestroy {
 		}		
 	}
 	addSupply(){
-		if(!this.authService.isLoggedIn){
+		if(this.authService.isLoggedIn){
 			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
 				return this.authService.login();
 			}
@@ -100,7 +100,7 @@ export class PointComponent implements OnInit, OnDestroy {
 		}
 	}
 	addActivity(){
-		if(!this.authService.isLoggedIn){
+		if(this.authService.isLoggedIn){
 			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
 				return this.authService.login();
 			}
@@ -110,7 +110,7 @@ export class PointComponent implements OnInit, OnDestroy {
 		}
 	}
 	updateDemography(){
-		if(!this.authService.isLoggedIn){
+		if(this.authService.isLoggedIn){
 			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
 				return this.authService.login();
 			}

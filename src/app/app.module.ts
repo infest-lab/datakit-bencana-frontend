@@ -19,6 +19,7 @@ import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { FullDateTimeFormatPipe } from './pipes/full-date-time-format.pipe';
 import { MatMenuModule, MatButtonModule } from '@angular/material';
 import { NoopAnimationPlayer } from '@angular/animations';
+import { OAuthModule, OAuthService, JwksValidationHandler } from "angular-oauth2-oidc";
 import { AuthService } from './auth/auth.service';
 import { AppService } from './app.service';
 import { AppComponent } from './app.component';
@@ -61,13 +62,15 @@ import { AboutComponent } from './about/about.component';
     ReactiveFormsModule,
     HttpClientModule,
     HttpLinkModule,
+    OAuthModule.forRoot(),
     AppRoutingModule,
     ApolloModule,
     MatMenuModule,
     MatButtonModule,
     BrowserAnimationsModule
   ],
-  providers: [  	
+  providers: [
+    OAuthService,
   	AuthService,
   	AppService,
   	/*{
