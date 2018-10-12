@@ -6,8 +6,6 @@ import { Apollo } from 'apollo-angular';
 import { ApolloClient, ApolloQueryResult } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { HttpHeaders } from '@angular/common/http';
-//import { HttpClient } from '@angular/common/http';
-//import { HttpLink } from 'apollo-angular-link-http';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { DocumentNode } from 'graphql';
@@ -23,8 +21,6 @@ import {storageFactory} from "./../../libs/storageFactory";
 import { environment } from './../../environments/environment';
 import { getUser } from '../graphql/query';
 import { createUser } from '../graphql/mutation';
-
-//export const localStore = storageFactory(localStorage);
 
 @Injectable()
 export class AuthService {
@@ -67,6 +63,7 @@ export class AuthService {
     this.oauthService.configure(this.authConfig);
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
+    this.oauthService.setStorage(this.localStore);
   }
 
   googleLogin(){
@@ -132,18 +129,19 @@ export class AuthService {
         this._setSession(authResult, profile);
       }
     });*/
-    let userProfile = this.oauthService.getIdentityClaims();
+    //console.log('authResult:',authResult);
+    let userProfile = JSON.parse(this.localStore.getItem('userProfile'));
     if(userProfile) this._setSession(authResult, userProfile); 
     else {
-      console.error('No userProfile');
-      //this.router.navigate(['/home']);
+      //console.error('No userProfile');
+      this.router.navigate(['/home']);
     }
   }
 
   private _setSession(authResult, profile) {
     // Save authentication data and update login status subject
-    console.log('authResult:',authResult);
-    console.log('userProfile:',profile);
+    //console.log('authResult:',authResult);
+    //console.log('userProfile:',profile);
     this.expiresAt = authResult.expires_in * 1000 + Date.now();
     this.accessToken = authResult.access_token;
     this.userProfile = profile;

@@ -29,13 +29,8 @@ export class AppComponent implements OnInit, OnChanges{
 	  this.oauthService.loadDiscoveryDocumentAndTryLogin();
 	}*/
 	ngOnInit() {
-		console.log('login init:',this.isLoggedIn)
-		this.isLoggedIn = this.authService.isLoggedIn;
-		let authResult = this.authService.getParamsObjectFromHash();
-	    if(authResult) this.authService.getUserInfo(authResult);
-	    else {
-	      console.error(`Error: Auth Failed`);      
-	    }
+		//console.log('login init:',this.isLoggedIn)
+		this.isLoggedIn = this.authService.isLoggedIn;		
 	}
 	ngOnChanges(){
 		this.cd.detectChanges();
@@ -44,12 +39,12 @@ export class AppComponent implements OnInit, OnChanges{
 		this.authService.login();
 		this.isLoggedIn = this.authService.isLoggedIn;
 		this.cd.markForCheck();
-		console.log('login login() :',this.isLoggedIn)
+		//console.log('login login() :',this.isLoggedIn)
 	}
 	logout(){  	
 		this.authService.logout();
 		this.isLoggedIn=this.authService.isLoggedIn;
 		this.cd.markForCheck();
-		console.log('login logout():',this.isLoggedIn)
+		//console.log('login logout():',this.isLoggedIn)
 	}
 }
