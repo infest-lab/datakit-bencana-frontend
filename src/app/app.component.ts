@@ -31,6 +31,11 @@ export class AppComponent implements OnInit, OnChanges{
 	ngOnInit() {
 		console.log('login init:',this.isLoggedIn)
 		this.isLoggedIn = this.authService.isLoggedIn;
+		let authResult = this.authService.getParamsObjectFromHash();
+	    if(authResult) this.authService.getUserInfo(authResult);
+	    else {
+	      console.error(`Error: Auth Failed`);      
+	    }
 	}
 	ngOnChanges(){
 		this.cd.detectChanges();
