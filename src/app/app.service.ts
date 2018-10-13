@@ -48,12 +48,12 @@ export class AppService{
 			let token = this.authService.getUserToken();
 			if (!this.authService.isLoggedIn) {			
 				args.context = {
-		      		headers: new HttpHeaders().set('datakit_api_key',`${apikey}`)     		
+		      		headers: new HttpHeaders().set('x-datakit-api-key',`${apikey}`)     		
 		      	};
 		    	return args;
 		    } else {
 		      	args.context = {
-		      		headers: new HttpHeaders().set('authorization',`Bearer ${token}`).set('datakit_api_key',`${apikey}`)	      		
+		      		headers: new HttpHeaders().set('authorization',`Bearer ${token}`).set('x-datakit-api-key',`${apikey}`)	      		
 		      	};
 		       	return  args;
 		    }
@@ -66,12 +66,12 @@ export class AppService{
 		let headers:any;
 		if (!this.authService.isLoggedIn) {
 			headers = {
-				'datakit_api_key': apikey
+				'x-datakit-api-key': apikey
 			};
 			//headers = new HttpHeaders().set('X-API-KEY',`${apikey}`);	
 	    } else {
 	    	headers = {
-				'datakit_api_key': apikey,
+				'x-datakit-api-key': apikey,
 				'authorization': `Bearer ${token}`
 			};
 	      	//headers = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('X-API-KEY',`${apikey}`);

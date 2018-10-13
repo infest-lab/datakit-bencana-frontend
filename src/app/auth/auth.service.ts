@@ -200,7 +200,7 @@ export class AuthService {
       let user = this.userProfile;
       let apikey = environment.api.key;
       let context = {
-        headers: new HttpHeaders().set('datakit_api_key',`${apikey}`)
+        headers: new HttpHeaders().set('x-datakit-api-key',`${apikey}`)
       }
       this.getUserApi =  _apollo.watchQuery<any>({
                 query: getUser,
