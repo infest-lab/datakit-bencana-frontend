@@ -30,6 +30,7 @@ export class AppComponent implements OnInit, OnChanges{
 	}*/
 	ngOnInit() {
 		//console.log('login init:',this.isLoggedIn)
+		this.authService.handleLoginCallback();
 		this.isLoggedIn = this.authService.isLoggedIn;		
 	}
 	ngOnChanges(){

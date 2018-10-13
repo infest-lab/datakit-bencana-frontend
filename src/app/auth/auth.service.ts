@@ -49,7 +49,7 @@ export class AuthService {
   authenticated: boolean;
   userApi: any;
   private getUserApi: Subscription;
-  public localStore = storageFactory(window.localStorage);
+  public localStore = storageFactory(localStorage);
   public oauthInstance:any;
 
   constructor(private router: Router, private apollo:Apollo, private oauthService: OAuthService) {       
@@ -61,9 +61,9 @@ export class AuthService {
   }
   private configureWithNewConfigApi() {
     this.oauthService.configure(this.authConfig);
+    //this.oauthService.setStorage(this.localStore);
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oauthService.loadDiscoveryDocumentAndTryLogin();
-    this.oauthService.setStorage(this.localStore);
+    this.oauthService.loadDiscoveryDocumentAndTryLogin();    
   }
 
   googleLogin(){
@@ -75,7 +75,6 @@ export class AuthService {
     //this.auth0.authorize();
     this.oauthService.initImplicitFlow();
   }
-
   getParamsObjectFromHash() {
     const hash = window.location.hash ? window.location.hash.split('#') : [];
     let toBeReturned = {};
@@ -129,9 +128,15 @@ export class AuthService {
         this._setSession(authResult, profile);
       }
     });*/
-    //console.log('authResult:',authResult);
+    this.localStore.setItem('access_token',authResult.access_token);
+    this.localStore.setItem('token_type',authResult.token_type);
+
+    console.log('authResult:',authResult);
+    console.log('claims', this.oauthService.getIdentityClaims());
+    console.log('access_token:',this.oauthService.getAccessToken());
+    console.log('access_token:',this.oauthService.loadUserProfile());
     let userProfile = JSON.parse(this.localStore.getItem('userProfile'));
-    if(userProfile) this._setSession(authResult, userProfile); 
+    if(userProfile) this._setSession(authResult, userProfile);
     else {
       //console.error('No userProfile');
       this.router.navigate(['/home']);
@@ -140,8 +145,8 @@ export class AuthService {
 
   private _setSession(authResult, profile) {
     // Save authentication data and update login status subject
-    //console.log('authResult:',authResult);
-    //console.log('userProfile:',profile);
+    console.log('authResult:',authResult);
+    console.log('userProfile:',profile);
     this.expiresAt = authResult.expires_in * 1000 + Date.now();
     this.accessToken = authResult.access_token;
     this.userProfile = profile;
