@@ -28,11 +28,11 @@ const routes: Routes = [
     path: 'callback',
     component: CallbackComponent
   },
-  {
+  /*{
     path: 'index.html',
     component: CallbackComponent
   },
-  {path: '**', redirectTo: '/home'}
+  */{path: '**', redirectTo: '/home'}
 ];
 
 @NgModule({
