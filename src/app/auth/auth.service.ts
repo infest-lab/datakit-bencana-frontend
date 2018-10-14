@@ -81,8 +81,8 @@ export class AuthService {
 
   private _setSession(authResult, profile) {
     // Save authentication data and update login status subject
-    console.log('authResult:',authResult);
-    console.log('userProfile:',profile);
+    //console.log('authResult:',authResult);
+    //console.log('userProfile:',profile);
     this.expiresAt = authResult.expiresIn * 1000 + Date.now();
     this.accessToken = authResult.accessToken;
     this.userProfile = profile;

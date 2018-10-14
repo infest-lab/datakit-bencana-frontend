@@ -15,13 +15,10 @@ import { split } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
-(window as any).global = window;
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { FullDateTimeFormatPipe } from './pipes/full-date-time-format.pipe';
 import { MatMenuModule, MatButtonModule } from '@angular/material';
 import { NoopAnimationPlayer } from '@angular/animations';
-import { OAuthModule, OAuthService, OAuthStorage, JwksValidationHandler } from "angular-oauth2-oidc";
-import { storageFactory } from "../libs/storageFactory";
 import { AuthService } from './auth/auth.service';
 import { AppService } from './app.service';
 import { AppComponent } from './app.component';
@@ -64,7 +61,6 @@ import { AboutComponent } from './about/about.component';
     ReactiveFormsModule,
     HttpClientModule,
     HttpLinkModule,
-    OAuthModule.forRoot(),
     AppRoutingModule,
     ApolloModule,
     MatMenuModule,
@@ -72,11 +68,9 @@ import { AboutComponent } from './about/about.component';
     BrowserAnimationsModule
   ],
   providers: [
-    OAuthService,
-  	AuthService,
+    AuthService,
   	AppService,
-    { provide: OAuthStorage, useValue: storageFactory(window.localStorage) }
-  	/*{
+    /*{
     provide: APOLLO_OPTIONS,
 	    useFactory(httpLink: HttpLink) {
 	      return {
