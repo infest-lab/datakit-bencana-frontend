@@ -14,8 +14,6 @@ import { Subject, Observable, Subscription } from 'rxjs';
 import { map, take, debounceTime } from 'rxjs/operators';
 import {} from 'jasmine';
 import * as CryptoJS from 'crypto-js';
-import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
-import { AuthConfig } from 'angular-oauth2-oidc';
 import {storageFactory} from "./../../libs/storageFactory";
 
 import { environment } from './../../environments/environment';
@@ -33,72 +31,33 @@ export class AuthService {
     redirectUri: environment.auth.redirectUri,
     scope: environment.auth.scope
   });
-
-  //Auth Google
-  authConfig: AuthConfig = {
-    issuer: 'https://accounts.google.com',
-    redirectUri: environment.auth.google.redirectUri,
-    clientId: environment.auth.google.clientId,
-    scope: 'openid profile email',
-    strictDiscoveryDocumentValidation: false
-  };
-
   expiresAt: number;
   userProfile: any;
   accessToken: string;
   authenticated: boolean;
   userApi: any;
   private getUserApi: Subscription;
-  public localStore = storageFactory(localStorage);
-  public oauthService:OAuthService;
+  public localStore = storageFactory(window.localStorage);
 
   constructor(private router: Router, private apollo:Apollo) {       
-    //this.getAccessToken();
-    //this.oauthService.configure(this.authConfig);
-
-    //this.oauthInstance = this.oauthService; 
-    //this.configureWithNewConfigApi();
+    this.getAccessToken();
   }
-  /*private configureWithNewConfigApi() {
-    this.oauthService.configure(this.authConfig);
-    //this.oauthService.setStorage(this.localStore);
-    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oauthService.loadDiscoveryDocumentAndTryLogin();    
-  }*/
-
   login() {
     // Auth0 authorize request
-    //this.auth0.authorize();
-    this.oauthService.initImplicitFlow();
+    this.auth0.authorize();
   }
-  getParamsObjectFromHash() {
-    const hash = window.location.hash ? window.location.hash.split('#') : [];
-    let toBeReturned = {};
-    if (hash.length && hash[1].split('&').length) {
-      toBeReturned = hash[1].split('&').reduce((acc, x) => {
-        const hello = x.split('=');
-        if (hello.length === 2) acc[hello[0]] = hello[1];
-          return acc;
-      }, {});
-    }
-    return Object.keys(toBeReturned).length ? toBeReturned : null;
-  }
-
   handleLoginCallback() {
     
-    let authResult = this.getParamsObjectFromHash();
-    if(authResult) this.getUserInfo(authResult);
-    else {
-      console.log(`No Auth`); 
-    }
-    this.router.navigate(['/home']);
-
-    /*let userProfile = this.oauthService.getIdentityClaims();
-    let userProfileStorage = JSON.parse(this.localStore.getItem('userProfile'));
-    //console.log('authResult:',authResult);
-    console.log('userProfile', userProfile);
-    console.log('access_token:',this.oauthService.getAccessToken());
-    console.log('userProfileStorage:',userProfileStorage);*/
+    // When Auth0 hash parsed, get profile
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken) {
+        window.location.hash = '';
+        this.getUserInfo(authResult);
+      } else if (err) {
+        console.error(`Error: ${err.error}`);
+      }
+      this.router.navigate(['/home']);
+    });
 
   }
 
@@ -112,26 +71,11 @@ export class AuthService {
 
   getUserInfo(authResult) {
     // Use access token to retrieve user's profile and set session
-    /*this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
+    this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
       if (profile) {        
         this._setSession(authResult, profile);
       }
-    });*/
-    this.localStore.setItem('access_token',authResult.access_token);
-    this.localStore.setItem('token_type',authResult.token_type);
-    
-    let userProfile = this.oauthService.getIdentityClaims();
-    let userProfileStorage = JSON.parse(this.localStore.getItem('userProfile'));
-    console.log('authResult:',authResult);
-    console.log('claims', this.oauthService.getIdentityClaims());
-    console.log('access_token:',this.oauthService.getAccessToken());
-    console.log('userProfileStorage:',userProfileStorage);
-
-    if(userProfile) this._setSession(authResult, userProfile);
-    else {
-      //console.error('No userProfile');
-      this.router.navigate(['/home']);
-    }
+    });    
   }
 
   private _setSession(authResult, profile) {
@@ -143,13 +87,9 @@ export class AuthService {
     this.userProfile = profile;
     this.authenticated = true;
     this.findOrCreateUser();
-    
-    //localStorage.setItem('access_token', this.encrypt(authResult.accessToken, false));
-    //localStorage.setItem('profile', this.encrypt(profile, true));
-    /*localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('expires_at', this.expiresAt.toString());*/
+    //Save to client local storage
     this.localStore.setItem('access_token', authResult.access_token);
-    this.localStore.setItem('expires_at', JSON.stringify(this.expiresAt));
+    this.localStore.setItem('expires_at', this.expiresAt.toString());
     
   }
 
@@ -157,20 +97,15 @@ export class AuthService {
     // Log out of Auth0 session
     // Ensure that returnTo URL is specified in Auth0
     // Application settings for Allowed Logout URLs
-    /*localStorage.removeItem('access_token');
-    localStorage.removeItem('userApi');
-    localStorage.removeItem('expires_at');*/
     this.authenticated = false;
     this.localStore.removeItem('access_token');
     this.localStore.removeItem('expires_at');
     this.localStore.removeItem('userApi');
     
-    /*this.auth0.logout({
+    this.auth0.logout({
       returnTo: environment.auth.redirectAfterLogoutUri,
       clientID: environment.auth.clientID
-    });*/
-    this.oauthService.logOut();
-    this.router.navigate(['/home']);
+    });
   }
 
   get isLoggedIn(): boolean {

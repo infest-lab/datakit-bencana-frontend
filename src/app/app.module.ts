@@ -15,6 +15,7 @@ import { split } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
+(window as any).global = window;
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { FullDateTimeFormatPipe } from './pipes/full-date-time-format.pipe';
 import { MatMenuModule, MatButtonModule } from '@angular/material';
@@ -74,7 +75,7 @@ import { AboutComponent } from './about/about.component';
     OAuthService,
   	AuthService,
   	AppService,
-    //{ provide: OAuthStorage, useValue: storageFactory(localStorage) }
+    { provide: OAuthStorage, useValue: storageFactory(window.localStorage) }
   	/*{
     provide: APOLLO_OPTIONS,
 	    useFactory(httpLink: HttpLink) {
