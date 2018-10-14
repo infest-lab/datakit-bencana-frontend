@@ -89,29 +89,21 @@ export class AuthService {
   }
 
   handleLoginCallback() {
-    //console.log('handleLoginCallback')
-    // When Auth0 hash parsed, get profile
-    /*this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken) {
-        window.location.hash = '';
-        this.getUserInfo(authResult);
-      } else if (err) {
-        console.error(`Error: ${err.error}`);
-      }
-      this.router.navigate(['/home']);
-    });*/
-    let authResult = this.getParamsObjectFromHash();
-    let userProfile = JSON.parse(this.localStore.getItem('userProfile'));
-    console.log('claims', userProfile);
-    if(authResult) this._setSession(authResult, userProfile);
+    
+    /*let authResult = this.getParamsObjectFromHash();
+    if(authResult) this.getUserInfo(authResult);
     else {
       console.log(`No Auth`); 
     }
-    this.router.navigate(['/home']);
-    /*console.log('auth:', authResult);
-    let userProfile = this.oauthService.getIdentityClaims();
-    console.log('userProfile:', userProfile);
     this.router.navigate(['/home']);*/
+
+    let userProfile = this.oauthService.getIdentityClaims();
+    let userProfileStorage = JSON.parse(this.localStore.getItem('userProfile'));
+    //console.log('authResult:',authResult);
+    console.log('claims', this.oauthService.getIdentityClaims());
+    console.log('access_token:',this.oauthService.getAccessToken());
+    console.log('userProfileStorage:',userProfileStorage);
+
   }
 
   getAccessToken() {
@@ -131,11 +123,14 @@ export class AuthService {
     });*/
     this.localStore.setItem('access_token',authResult.access_token);
     this.localStore.setItem('token_type',authResult.token_type);
-
+    
+    let userProfile = this.oauthService.getIdentityClaims();
+    let userProfileStorage = JSON.parse(this.localStore.getItem('userProfile'));
     console.log('authResult:',authResult);
     console.log('claims', this.oauthService.getIdentityClaims());
     console.log('access_token:',this.oauthService.getAccessToken());
-    let userProfile = this.oauthService.getIdentityClaims();
+    console.log('userProfileStorage:',userProfileStorage);
+
     if(userProfile) this._setSession(authResult, userProfile);
     else {
       //console.error('No userProfile');
@@ -169,6 +164,7 @@ export class AuthService {
     /*localStorage.removeItem('access_token');
     localStorage.removeItem('userApi');
     localStorage.removeItem('expires_at');*/
+    this.authenticated = false;
     this.localStore.removeItem('access_token');
     this.localStore.removeItem('expires_at');
     this.localStore.removeItem('userApi');
