@@ -56,10 +56,7 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "frontend:build:production",
-              "devServer": {
-                "historyApiFallback": true
-              }
+              "browserTarget": "frontend:build:production"
             }
           }
         },
