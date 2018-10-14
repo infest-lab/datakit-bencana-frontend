@@ -83,8 +83,8 @@ export class AuthService {
     // Save authentication data and update login status subject
     console.log('authResult:',authResult);
     console.log('userProfile:',profile);
-    this.expiresAt = authResult.expires_in * 1000 + Date.now();
-    this.accessToken = authResult.access_token;
+    this.expiresAt = authResult.expiresIn * 1000 + Date.now();
+    this.accessToken = authResult.accessToken;
     this.userProfile = profile;
     this.authenticated = true;
     this.findOrCreateUser();
