@@ -3,6 +3,7 @@ import { AuthService } from './auth/auth.service';
 import { authConfig } from './auth/auth.config';
 import { environment } from '../environments/environment';
 import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
+(window as any).global = window;
 
 @Component({
   selector: 'app-root',

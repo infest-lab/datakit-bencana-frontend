@@ -104,7 +104,7 @@ export class AuthService {
     let authResult = this.getParamsObjectFromHash();
     if(authResult) this.getUserInfo(authResult);
     else {
-      console.error(`Error: Auth Failed`);      
+      console.log(`No Auth`); 
     }
     this.router.navigate(['/home']);
     /*console.log('auth:', authResult);
@@ -128,12 +128,12 @@ export class AuthService {
         this._setSession(authResult, profile);
       }
     });*/
-    this.localStore.setItem('access_token',authResult.access_token);
-    this.localStore.setItem('token_type',authResult.token_type);
+    //this.localStore.setItem('access_token',authResult.access_token);
+    //this.localStore.setItem('token_type',authResult.token_type);
 
-    //console.log('authResult:',authResult);
-    //console.log('claims', this.oauthService.getIdentityClaims());
-    //console.log('access_token:',this.oauthService.getAccessToken());
+    console.log('authResult:',authResult);
+    console.log('claims', this.oauthService.getIdentityClaims());
+    console.log('access_token:',this.oauthService.getAccessToken());
     let userProfile = this.oauthService.getIdentityClaims();
     if(userProfile) this._setSession(authResult, userProfile);
     else {
