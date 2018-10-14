@@ -15,20 +15,20 @@ export class AppComponent implements OnInit, OnChanges{
 	apiUrl = environment.api.graphql;
 	isLoggedIn:boolean;
 
-	constructor(public authService: AuthService, private oauthService: OAuthService, private cd:ChangeDetectorRef) {			
+	constructor(public authService: AuthService, private cd:ChangeDetectorRef) {			
 		this.isLoggedIn = this.authService.isLoggedIn;
-		this.configureWithNewConfigApi();
+		//this.configureWithNewConfigApi();
 	}
 	/*constructor(private oauthService: OAuthService,  private cd:ChangeDetectorRef) {
 	  this.configureWithNewConfigApi();
 	}*/
 
-	private configureWithNewConfigApi() {
+	/*private configureWithNewConfigApi() {
 	  this.oauthService.configure(authConfig);
 	  this.oauthService.tokenValidationHandler = new JwksValidationHandler();
 	  this.oauthService.loadDiscoveryDocumentAndTryLogin();
 	  this.authService.oauthService = this.oauthService;
-	}
+	}*/
 	ngOnInit() {
 		//console.log('login init:',this.isLoggedIn)
 		this.authService.handleLoginCallback();
