@@ -100,7 +100,7 @@ export class AuthService {
       }
       this.router.navigate(['/home']);
     });*/
-
+    console.log('claims', this.oauthService.getIdentityClaims());
     let authResult = this.getParamsObjectFromHash();
     if(authResult) this.getUserInfo(authResult);
     else {
