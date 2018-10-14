@@ -90,19 +90,19 @@ export class AuthService {
 
   handleLoginCallback() {
     
-    /*let authResult = this.getParamsObjectFromHash();
+    let authResult = this.getParamsObjectFromHash();
     if(authResult) this.getUserInfo(authResult);
     else {
       console.log(`No Auth`); 
     }
-    this.router.navigate(['/home']);*/
+    this.router.navigate(['/home']);
 
-    let userProfile = this.oauthService.getIdentityClaims();
+    /*let userProfile = this.oauthService.getIdentityClaims();
     let userProfileStorage = JSON.parse(this.localStore.getItem('userProfile'));
     //console.log('authResult:',authResult);
-    console.log('claims', this.oauthService.getIdentityClaims());
+    console.log('userProfile', userProfile);
     console.log('access_token:',this.oauthService.getAccessToken());
-    console.log('userProfileStorage:',userProfileStorage);
+    console.log('userProfileStorage:',userProfileStorage);*/
 
   }
 
