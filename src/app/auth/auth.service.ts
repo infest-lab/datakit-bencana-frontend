@@ -49,7 +49,7 @@ export class AuthService {
   authenticated: boolean;
   userApi: any;
   private getUserApi: Subscription;
-  public localStore = storageFactory(sessionStorage);
+  public localStore = storageFactory(localStorage);
   public oauthInstance:any;
 
   constructor(private router: Router, private apollo:Apollo, private oauthService: OAuthService) {       
@@ -101,7 +101,8 @@ export class AuthService {
       this.router.navigate(['/home']);
     });*/
     let authResult = this.getParamsObjectFromHash();
-    if(authResult) this.getUserInfo(authResult);
+    let userProfile = this.oauthService.getIdentityClaims();
+    if(authResult) this._setSession(authResult, userProfile);
     else {
       console.log(`No Auth`); 
     }
@@ -143,8 +144,8 @@ export class AuthService {
 
   private _setSession(authResult, profile) {
     // Save authentication data and update login status subject
-    //console.log('authResult:',authResult);
-    //console.log('userProfile:',profile);
+    console.log('authResult:',authResult);
+    console.log('userProfile:',profile);
     this.expiresAt = authResult.expires_in * 1000 + Date.now();
     this.accessToken = authResult.access_token;
     this.userProfile = profile;
