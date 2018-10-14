@@ -101,7 +101,7 @@ export class AuthService {
       this.router.navigate(['/home']);
     });*/
     let authResult = this.getParamsObjectFromHash();
-    let userProfile = this.oauthService.getIdentityClaims();
+    let userProfile = JSON.parse(this.localStore.getItem('userProfile'));
     console.log('claims', userProfile);
     if(authResult) this._setSession(authResult, userProfile);
     else {
