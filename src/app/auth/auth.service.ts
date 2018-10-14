@@ -50,6 +50,7 @@ export class AuthService {
     
     // When Auth0 hash parsed, get profile
     this.auth0.parseHash((err, authResult) => {
+      console.log('authResult handleLoginCallback: ', authResult);
       if (authResult && authResult.accessToken) {
         window.location.hash = '';
         this.getUserInfo(authResult);
@@ -88,8 +89,8 @@ export class AuthService {
     this.authenticated = true;
     this.findOrCreateUser();
     //Save to client local storage
-    this.localStore.setItem('access_token', authResult.access_token);
-    this.localStore.setItem('expires_at', this.expiresAt.toString());
+    //this.localStore.setItem('access_token', authResult.access_token);
+    this.localStore.setItem('expires_at', JSON.stringify(this.expiresAt.toString()));
     
   }
 
