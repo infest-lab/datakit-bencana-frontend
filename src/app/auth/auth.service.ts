@@ -50,25 +50,21 @@ export class AuthService {
   userApi: any;
   private getUserApi: Subscription;
   public localStore = storageFactory(localStorage);
-  public oauthInstance:any;
+  public oauthService:OAuthService;
 
-  constructor(private router: Router, private apollo:Apollo, private oauthService: OAuthService) {       
+  constructor(private router: Router, private apollo:Apollo) {       
     //this.getAccessToken();
     //this.oauthService.configure(this.authConfig);
 
     //this.oauthInstance = this.oauthService; 
-    this.configureWithNewConfigApi();
+    //this.configureWithNewConfigApi();
   }
-  private configureWithNewConfigApi() {
+  /*private configureWithNewConfigApi() {
     this.oauthService.configure(this.authConfig);
     //this.oauthService.setStorage(this.localStore);
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
     this.oauthService.loadDiscoveryDocumentAndTryLogin();    
-  }
-
-  googleLogin(){
-    this.oauthService.initImplicitFlow();
-  }
+  }*/
 
   login() {
     // Auth0 authorize request
