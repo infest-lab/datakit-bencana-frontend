@@ -73,7 +73,7 @@ import { AboutComponent } from './about/about.component';
     OAuthService,
   	AuthService,
   	AppService,
-    { provide: OAuthStorage, useValue: localStorage }
+    { provide: OAuthStorage, useValue: sessionStorage }
   	/*{
     provide: APOLLO_OPTIONS,
 	    useFactory(httpLink: HttpLink) {

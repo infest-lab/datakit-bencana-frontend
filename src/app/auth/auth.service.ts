@@ -49,7 +49,7 @@ export class AuthService {
   authenticated: boolean;
   userApi: any;
   private getUserApi: Subscription;
-  public localStore = storageFactory(localStorage);
+  public localStore = storageFactory(sessionStorage);
   public oauthInstance:any;
 
   constructor(private router: Router, private apollo:Apollo, private oauthService: OAuthService) {       
