@@ -90,7 +90,7 @@ export class AuthService {
     this.findOrCreateUser();
     //Save to client local storage
     //this.localStore.setItem('access_token', authResult.access_token);
-    this.localStore.setItem('expires_at', JSON.stringify(this.expiresAt.toString()));
+    this.localStore.setItem('expires_at', JSON.stringify(this.expiresAt));
     
   }
 
