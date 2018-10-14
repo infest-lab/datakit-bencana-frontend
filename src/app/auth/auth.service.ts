@@ -102,6 +102,7 @@ export class AuthService {
     });*/
     let authResult = this.getParamsObjectFromHash();
     let userProfile = this.oauthService.getIdentityClaims();
+    console.log('claims', userProfile);
     if(authResult) this._setSession(authResult, userProfile);
     else {
       console.log(`No Auth`); 

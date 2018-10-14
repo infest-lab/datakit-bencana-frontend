@@ -20,6 +20,7 @@ import { FullDateTimeFormatPipe } from './pipes/full-date-time-format.pipe';
 import { MatMenuModule, MatButtonModule } from '@angular/material';
 import { NoopAnimationPlayer } from '@angular/animations';
 import { OAuthModule, OAuthService, OAuthStorage, JwksValidationHandler } from "angular-oauth2-oidc";
+import { storageFactory } from "../libs/storageFactory";
 import { AuthService } from './auth/auth.service';
 import { AppService } from './app.service';
 import { AppComponent } from './app.component';
@@ -73,7 +74,7 @@ import { AboutComponent } from './about/about.component';
     OAuthService,
   	AuthService,
   	AppService,
-    { provide: OAuthStorage, useValue: localStorage }
+    { provide: OAuthStorage, useValue: storageFactory(localStorage) }
   	/*{
     provide: APOLLO_OPTIONS,
 	    useFactory(httpLink: HttpLink) {
