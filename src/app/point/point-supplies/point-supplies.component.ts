@@ -80,6 +80,24 @@ export class PointSuppliesComponent implements OnInit, OnDestroy {
 			this.cd.markForCheck();			
 		})
 	}
+	verifySupply(id){
+		if(!this.authService.isLoggedIn){
+			if(confirm('Untuk memutakhirkan data, Anda diperlukan masuk/login terlebih dulu')){
+				return this.authService.login();
+			}
+		}else{
+			this.appService.verifySupply(id, this.authService.getUserId()).subscribe(({data}) => {
+				if(data.verifySupply){
+					console.log(data.verifySupply)
+					let _updated = _.findWhere(this.supplies, { id: id });
+					_updated.verified = data.verifySupply.verified;
+					_updated.verifiedBy = data.verifySupply.verifiedBy;
+					_.extend(_.findWhere(this.supplies, { id: id }), _updated);
+				}
+				else alert('Verify Supply failed. Supply hanya dapat diverifikasi oleh pengguna lain.');
+			});
+		}				
+	}
 	ngOnDestroy(){
 		this.sub.unsubscribe();
 		clearInterval(this._timer);

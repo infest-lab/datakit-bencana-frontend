@@ -22,15 +22,17 @@
 		<div class="d-flex w-100 justify-content-between">
 		  <h5 class="mb-1">{{activity.name}}</h5>
 		  <div>
-		  	<a style="cursor: pointer;" class="pull-right badge badge-light" [matMenuTriggerFor]="menu">
+		  	<a style="cursor: pointer;" class="pull-right badge badge-light" [matMenuTriggerFor]="timelinemenuactivities" *ngIf="!activity.verified">
 				<span class="fa fa-ellipsis-h text-primary"></span>
 			</a>
-	        <mat-menu #menu="matMenu">
+	        <mat-menu #timelinemenuactivities="matMenu">
 	          <div>
-	            <button mat-menu-item>Set Verified</button>
-	            <button mat-menu-item>Set Closed</button>
+	            <button mat-menu-item (click)="verifyActivity(activity.id)">Set Verified</button>
 	          </div>
 	        </mat-menu>
+	        <div class="d-flex w-100 justify-content-left">
+	        	<span *ngIf="activity.verified" class="fa fa-check fa-check-circle text-primary" title="Verified by {{activity.verifiedBy?.name}}"></span>
+	        </div>
 		  </div>
 		</div>
 		<div class="mb-1">{{ activity.description }}</div>

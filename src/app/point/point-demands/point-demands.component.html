@@ -18,16 +18,21 @@
 	</div>
 	<ng-container *ngFor="let demand of demands; let i=index">
 	<div class="list-group-item flex-column align-items-start">
-		<a style="cursor: pointer;" class="pull-right badge badge-light" [matMenuTriggerFor]="menu">
+		<a style="cursor: pointer;" class="pull-right badge badge-light" [matMenuTriggerFor]="timelinemenu" *ngIf="!demand.verified || !demand.closed">
 			<span class="fa fa-ellipsis-h text-primary"></span>
 		</a>
-        <mat-menu #menu="matMenu">
+        <mat-menu #timelinemenu="matMenu">
           <div>
-            <button mat-menu-item>Set Verified</button>
+            <button mat-menu-item *ngIf="!demand.verified" (click)="verifyDemand(demand.id)">Set Verified</button>
+            <button mat-menu-item *ngIf="!demand.closed" (click)="closeDemand(demand.id)">Set Close</button>
           </div>
         </mat-menu>
-		<div class="d-flex w-100 justify-content-between">
-		  <h5 class="mb-1">{{demand.name}}</h5>
+        <div class="d-flex w-100 justify-content-left">
+        	<span *ngIf="demand.verified" class="fa fa-check fa-check-circle text-primary mr-2" title="Verified by {{demand.verifiedBy.name}}"></span>
+        	<span *ngIf="demand.closed" class="fa fa-times fa-times-circle text-muted" title="Closed by {{demand.closedBy.name}}"></span>		
+        </div>
+        <div class="d-flex w-100 justify-content-between">
+		  <h5 class="mb-1">{{demand.name}} </h5>
 		  <div><span class="badge badge-danger badge-pill">{{demand.qty}}</span> {{demand.unit}}</div>
 		</div>
 		<div>

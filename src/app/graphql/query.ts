@@ -13,9 +13,9 @@ export const getUser = gql`
 				picture
 				sub
 			}
-			verified			
+			verified						
 			createdAt			
-			modifiedAt			
+			modifiedAt
 		}
 	}
 `;
@@ -50,6 +50,12 @@ export const point = gql`
 					phone
 				}
 		    }
+		    verified
+		    verifiedBy{
+		    	name
+				email				
+				phone
+		    }
 
 		}
 	}
@@ -74,6 +80,16 @@ export const pointDemands = gql`
 			qty
 			unit
 			verified
+			verifiedBy{
+				name
+				email				
+				phone
+			}
+			closedBy{
+				name
+				email				
+				phone
+			}
 			closed
 			createdAt
 			modifiedAt
@@ -93,6 +109,11 @@ export const pointSupplies = gql`
 			qty
 			unit
 			verified
+			verifiedBy{
+				name
+				email				
+				phone
+			}
 			createdAt
 			modifiedAt
 			user{
@@ -111,6 +132,11 @@ export const pointActivities = gql`
 			description
 			date
 			verified
+			verifiedBy{
+				name
+				email				
+				phone
+			}
 			createdAt
 			modifiedAt
 			user{
@@ -129,6 +155,26 @@ export const statistik = gql`
 			demandsCount
 			suppliesCount
 			activitiesCount
+		}		
+	}
+`;
+
+export const pointCategory = gql`
+	query{
+		pointCategory{
+			name
+			pointCount
+		}		
+	}
+`;
+
+export const pointsByCategory = gql`
+	query pointsByCategory($category: String!){
+		pointsByCategory(category: $category){
+			id
+			name
+			address
+			category
 		}		
 	}
 `;

@@ -5,6 +5,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { PointComponent } from './point/point.component';
 import { AboutComponent } from './about/about.component';
+import { ListPointsByCategoryComponent } from './list-points/list-points-bycategory.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path:'point/:id',
     component: PointComponent
+  },
+  {
+    path:'points/:category',
+    component: ListPointsByCategoryComponent
   },
   {
     path:'about',

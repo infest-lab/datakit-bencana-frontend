@@ -16,13 +16,20 @@ import {
 	pointDemands,
 	pointSupplies,
 	pointActivities,
-	statistik
+	statistik,
+	pointCategory,
+	pointsByCategory
 } from './graphql/query';
 import {
 	addDemand,
 	addActivity,
 	addDemography,
-	addSupply
+	addSupply,
+	verifyDemand,
+	closeDemand,
+	verifySupply,
+	verifyActivity,
+	verifyDemography
 } from './graphql/mutation';
 import {
 	onDemandAdded,
@@ -83,6 +90,7 @@ export class AppService{
 	* 		List of Queries and Mutations
 	* ==============================================================*/
 	
+	// Points
 	listPoints(){
 		return this.query({
             query: listPoints,
@@ -97,10 +105,38 @@ export class AppService{
         })
         .valueChanges
 	}
+	pointCategory(){
+		return this.query({
+            query: pointCategory
+        })
+        .valueChanges
+	}
+	pointsByCategory(category){
+		return this.query({
+            query: pointsByCategory,
+            variables: {
+            	category: category
+            }
+        })
+        .valueChanges
+	}
+	//Demands
 	addDemand(input){
 		return this.mutation({
 			mutation: addDemand,
 			variables: {input: input}
+		});
+	}
+	verifyDemand(id, user){
+		return this.mutation({
+			mutation: verifyDemand,
+			variables: {id: id, user:user}
+		});
+	}
+	closeDemand(id, user){
+		return this.mutation({
+			mutation: closeDemand,
+			variables: {id: id, user:user}
 		});
 	}
 	addSupply(input){
@@ -109,16 +145,34 @@ export class AppService{
 			variables: {input: input}
 		});
 	}
+	verifySupply(id, user){
+		return this.mutation({
+			mutation: verifySupply,
+			variables: {id: id, user:user}
+		});
+	}
 	addActivity(input){
 		return this.mutation({
 			mutation: addActivity,
 			variables: {input: input}
 		});
 	}
+	verifyActivity(id, user){
+		return this.mutation({
+			mutation: verifyActivity,
+			variables: {id: id, user:user}
+		});
+	}
 	addDemography(input){
 		return this.mutation({
 			mutation: addDemography,
 			variables: {input: input}
+		});
+	}
+	verifyDemography(id, user){
+		return this.mutation({
+			mutation: verifyDemography,
+			variables: {id: id, user:user}
 		});
 	}
 	pointDemands(pointId){

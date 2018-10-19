@@ -18,14 +18,17 @@
 	</div>
 	<ng-container *ngFor="let supply of supplies; let i=index">
 	<div class="list-group-item flex-column align-items-start">
-		<a style="cursor: pointer;" class="pull-right badge badge-light" [matMenuTriggerFor]="menu">
+		<a style="cursor: pointer;" class="pull-right badge badge-light" [matMenuTriggerFor]="timelinemenusupplies" *ngIf="!supply.verified">
 			<span class="fa fa-ellipsis-h text-primary"></span>
 		</a>
-        <mat-menu #menu="matMenu">
+        <mat-menu #timelinemenusupplies="matMenu">
           <div>
-            <button mat-menu-item>Set Verified</button>
+            <button mat-menu-item (click)="verifySupply(supply.id)">Set Verified</button>
           </div>
         </mat-menu>
+        <div class="d-flex w-100 justify-content-left">
+        	<span *ngIf="supply.verified" class="fa fa-check fa-check-circle text-primary" title="Verified by {{supply.verifiedBy?.name}}"></span>
+        </div>
 		<div class="d-flex w-100 justify-content-between">
 		  <h5 class="mb-1">{{supply.name}}</h5>
 			<div>

@@ -1,0 +1,10 @@
+<div *ngIf="categories">
+	<div class="list-group">
+		<div class="list-group-item bg-primary text-white">
+			<h5 class="card-title"><span class="fa fa-home"></span> Daftar Titik</h5>
+		</div>
+		<a class="list-group-item list-group-item-action" *ngFor="let cat of categories; let i=index" routerLink="/points/{{cat.name}}" style="cursor: pointer;">
+			<strong>{{i + 1}}. {{cat.name}}</strong> <span class="badge badge-pill badge-primary pull-right">{{cat.pointCount}}</span>
+		</a>
+	</div>
+</div>

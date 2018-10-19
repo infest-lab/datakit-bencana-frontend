@@ -58,7 +58,8 @@ export class SupplyComponent implements OnInit, OnChanges, OnDestroy{
 		if(this.form.valid){
 			//console.log(this.form);
 			this.sub = this.appService.addSupply(this.form.value).subscribe(({data}) => {
-				if(data.addDemand !== null){
+				console.log(data)
+				if(data.addSupply != null){
 					this.error='';
 					this.success = data.addSupply.name;
 					this.form.reset();

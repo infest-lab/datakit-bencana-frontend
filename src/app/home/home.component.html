@@ -1,12 +1,12 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-3 mt-3">
-			<app-list-points></app-list-points>			
+			<app-point-category></app-point-category>
 		</div>
 		<div class="col-md-9 mt-3" style="min-height:400px;">
 			<p *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> Memuat...</p>
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-3 mb-2">
 					<div class="card bg-dark text-white">
 						<div class="card-content text-center text-white">
 							<h1 class="display-3">{{statistik?.pointsCount}}</h1>
@@ -16,7 +16,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-3 mb-2">
 					<div class="card bg-danger text-white">
 						<div class="card-content text-center text-white">
 							<h1 class="display-3">{{statistik?.demandsCount}}</h1>
@@ -26,7 +26,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-3 mb-2">
 					<div class="card bg-success text-white">
 						<div class="card-content text-center text-white">
 							<h1 class="display-3">{{statistik?.suppliesCount}}</h1>
@@ -36,7 +36,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-3 mb-2">
 					<div class="card bg-info text-white">
 						<div class="card-content text-center text-white">
 							<h1 class="display-3">{{statistik?.activitiesCount}}</h1>

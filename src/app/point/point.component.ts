@@ -1,12 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Subject, Observable, timer, Subscription } from 'rxjs';
+import { QueryRef } from 'apollo-angular';
 import {map} from 'rxjs/operators';
 import { _ } from 'underscore';
 import * as moment from 'moment';
 import {AuthService} from '../auth/auth.service';
 import {AppService} from '../app.service';
-
+import { point } from '../graphql/query';
+import { onDemographyAdded } from '../graphql/subscription';
 @Component({
   selector: 'app-point',
   templateUrl: './point.component.html',
@@ -24,13 +26,21 @@ export class PointComponent implements OnInit, OnDestroy {
 	supplyFormDisplay: boolean = false;
 	activityFormDisplay: boolean = false;
 	demographyFormDisplay: boolean = false;
+	pointQuery: QueryRef<any>;
+	pointObs: Observable<any>;
 
 	constructor(private route: ActivatedRoute, private appService:AppService, private authService: AuthService) { }
 
-	ngOnInit() {
+	ngOnInit() {		
 		this.route.params.subscribe(params => {
 			this.pointId = params.id;
-			this.getData();
+			this.getPoint();
+			//this.getData();
+			this.pointObs.subscribe( ({data}) => {
+				this.point = data.point;
+				this.loading = false;
+			});
+			this.subscribeNewDemography();
 		});	
 	}
 	getData(){
@@ -39,11 +49,32 @@ export class PointComponent implements OnInit, OnDestroy {
 			this.loading = false;
 		});
 	}
-	subscribeToData(){
-	    this.timerSubscription = timer(5000).subscribe(() => this.getData());
+	getPoint(){
+		//console.log('pointId:',this.pointId)
+		this.pointQuery = this.appService.query({
+	      query: point,
+	      variables: {
+	        id: this.pointId
+	      }
+	    });
+
+	    this.pointObs = this.pointQuery.valueChanges; // async results
+	}
+	subscribeNewDemography(){
+		this.pointQuery.subscribeToMore({
+			document: onDemographyAdded,
+			updateQuery: (prev, {subscriptionData}) => {
+				if (!subscriptionData.data) {
+				  return prev;
+				}
+
+				const newItem = subscriptionData.data.demographyAdded;
+				prev.point.lastDemography = newItem;
+				return prev;
+			}
+		})
 	}
 	refresh($event){
-		console.log($event)
 		if($event == true) this.getData();
 	}
 	ngOnDestroy(){
@@ -80,7 +111,7 @@ export class PointComponent implements OnInit, OnDestroy {
 		this.demographyForm(false);
 	}
 	addDemand(){
-		if(this.authService.isLoggedIn){
+		if(!this.authService.isLoggedIn){
 			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
 				return this.authService.login();
 			}
@@ -90,7 +121,7 @@ export class PointComponent implements OnInit, OnDestroy {
 		}		
 	}
 	addSupply(){
-		if(this.authService.isLoggedIn){
+		if(!this.authService.isLoggedIn){
 			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
 				return this.authService.login();
 			}
@@ -100,7 +131,7 @@ export class PointComponent implements OnInit, OnDestroy {
 		}
 	}
 	addActivity(){
-		if(this.authService.isLoggedIn){
+		if(!this.authService.isLoggedIn){
 			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
 				return this.authService.login();
 			}
@@ -110,7 +141,7 @@ export class PointComponent implements OnInit, OnDestroy {
 		}
 	}
 	updateDemography(){
-		if(this.authService.isLoggedIn){
+		if(!this.authService.isLoggedIn){
 			if(confirm('Untuk menambahkan data, Anda diperlukan masuk/login terlebih dulu')){
 				return this.authService.login();
 			}

@@ -26,6 +26,16 @@ export const onDemandAdded = gql`
         	email
         	phone
         }
+        verifiedBy{
+            name
+            email                
+            phone
+        }
+        closedBy{
+            name
+            email                
+            phone
+        }
       }
     }
 `;
@@ -44,6 +54,11 @@ export const onSupplyAdded = gql`
         	email
         	phone
         }
+        verifiedBy{
+            name
+            email                
+            phone
+        }
       }
     }
 `;
@@ -61,6 +76,11 @@ export const onActivityAdded = gql`
         	name
         	email
         	phone
+        }
+        verifiedBy{
+            name
+            email                
+            phone
         }
       }
     }
@@ -82,6 +102,11 @@ export const onDemographyAdded = gql`
         	name
         	email
         	phone
+        }
+        verifiedBy{
+            name
+            email                
+            phone
         }
       }
     }

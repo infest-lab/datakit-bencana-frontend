@@ -18,6 +18,7 @@ export class DemographyComponent implements OnInit, OnChanges, OnDestroy{
 	
 	@Output() display = new EventEmitter<boolean>();
 	@Input() pointId:any;
+	@Input() demography:any;
 	form: FormGroup;
 	sub: Subscription;
 	error: string='';
@@ -35,14 +36,13 @@ export class DemographyComponent implements OnInit, OnChanges, OnDestroy{
 		//this.sub.unsubscribe();
 	}
 	buildForm(){
-		//console.log(this.pointId)
 		this.form = this.formBuilder.group({
-		  male: [0, Validators.required],
-		  female: [0, Validators.required],
-		  children: [0, Validators.required],
-		  adult: [0, Validators.required],
-		  lansia: [0, Validators.required],
-		  difable: [0, Validators.required],
+		  male: [(this.demography != null) ? this.demography.male : 0, Validators.required],
+		  female: [(this.demography != null) ? this.demography.female : 0, Validators.required],
+		  children: [(this.demography != null) ? this.demography.children : 0, Validators.required],
+		  adult: [(this.demography != null) ? this.demography.adult : 0, Validators.required],
+		  lansia: [(this.demography != null) ? this.demography.lansia : 0, Validators.required],
+		  difable: [(this.demography != null) ? this.demography.difable : 0, Validators.required],
 		  point: [this.pointId, Validators.required],
 		  user: [this.authService.getUserId(), Validators.required]
 		});

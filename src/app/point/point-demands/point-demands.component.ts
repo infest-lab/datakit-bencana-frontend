@@ -80,6 +80,42 @@ export class PointDemandsComponent implements OnInit, OnDestroy {
 			this.cd.markForCheck();			
 		})
 	}
+	verifyDemand(id){
+		if(!this.authService.isLoggedIn){
+			if(confirm('Untuk memutakhirkan data, Anda diperlukan masuk/login terlebih dulu')){
+				return this.authService.login();
+			}
+		}else{
+			this.appService.verifyDemand(id, this.authService.getUserId()).subscribe(({data}) => {
+				if(data.verifyDemand){
+					console.log(data.verifyDemand)
+					let _updated = _.findWhere(this.demands, { id: id });
+					_updated.verified = data.verifyDemand.verified;
+					_updated.verifiedBy = data.verifyDemand.verifiedBy;
+					_.extend(_.findWhere(this.demands, { id: id }), _updated);
+				}
+				else alert('Verify Demand failed. Demand hanya dapat diverifikasi oleh pengguna lain.');
+			});
+		}				
+	}
+	closeDemand(id){
+		if(!this.authService.isLoggedIn){
+			if(confirm('Untuk memutakhirkan data, Anda diperlukan masuk/login terlebih dulu')){
+				return this.authService.login();
+			}
+		}else{
+			this.appService.closeDemand(id, this.authService.getUserId()).subscribe(({data}) => {
+				if(data.closeDemand){
+					let _updated = _.findWhere(this.demands, { id: id });
+					_updated.closed = data.closeDemand.closed;
+					_updated.closedBy = data.closeDemand.closedBy;
+					_.extend(_.findWhere(this.demands, { id: id }), _updated);
+				}else{
+					alert('Close Demand failed.');
+				}			
+			});
+		}
+	}
 	ngOnDestroy(){
 		this.sub.unsubscribe();
 		clearInterval(this._timer);

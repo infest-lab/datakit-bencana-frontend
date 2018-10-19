@@ -35,7 +35,8 @@ import { PointDemandsComponent } from './point/point-demands/point-demands.compo
 import { PointSuppliesComponent } from './point/point-supplies/point-supplies.component';
 import { PointActivitiesComponent } from './point/point-activities/point-activities.component';
 import { AboutComponent } from './about/about.component';
-
+import { PointCategoryComponent } from './point/point-category/point-category.component';
+import { ListPointsByCategoryComponent } from './list-points/list-points-bycategory.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +54,9 @@ import { AboutComponent } from './about/about.component';
     PointDemandsComponent,
     PointSuppliesComponent,
     PointActivitiesComponent,
-    AboutComponent
+    AboutComponent,
+    PointCategoryComponent,
+    ListPointsByCategoryComponent
   ],
   imports: [
     BrowserModule,

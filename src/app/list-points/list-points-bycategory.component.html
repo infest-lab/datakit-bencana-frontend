@@ -1,0 +1,36 @@
+<div class="container-fluid" *ngIf="!partial">
+	<div class="row">
+		<div class="col-md-3 mt-3">
+			<div *ngIf="points">
+				<input type="text" placeholder="Ketik untuk mencari" name="search" class="form-control" (ngModel) = "querySearch" #searchQuery (keyup)="searchPoint(searchQuery.value)">				
+				<div class="list-group">
+					<div class="list-group-item bg-primary text-white mt-3">
+						<h5 class="card-title"><span class="fa fa-home"></span> {{category}}</h5>
+					</div>
+						<a class="list-group-item list-group-item-action" *ngFor="let point of points; let i=index" routerLink="/point/{{point.id}}" style="cursor: pointer;">
+							<strong>{{i + 1}}. {{point.name}}</strong><br/>
+						  	<span class="text-muted small">{{point.address}}</span>			
+						</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9 mt-3" style="min-height:400px;">
+
+		</div>
+	</div>
+</div>
+
+<div *ngIf="partial">
+	<div *ngIf="points">
+		<input type="text" placeholder="Ketik untuk mencari" name="search" class="form-control" (ngModel) = "querySearch" #searchQuery (keyup)="searchPoint(searchQuery.value)">				
+		<div class="list-group mt-3" style="max-height:600px; overflow: scroll;">
+			<div class="list-group-item bg-primary text-white">
+				<h5 class="card-title"><span class="fa fa-home"></span> {{category}}</h5>
+			</div>
+				<a class="list-group-item list-group-item-action" *ngFor="let point of points; let i=index" routerLink="/point/{{point.id}}" style="cursor: pointer;">
+					<strong>{{i + 1}}. {{point.name}}</strong><br/>
+				  	<span class="text-muted small">{{point.address}}</span>			
+				</a>
+		</div>
+	</div>
+</div>
