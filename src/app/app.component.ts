@@ -1,5 +1,6 @@
 import { OnInit, Component } from '@angular/core';
 import { AuthService } from './auth/auth.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,9 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent implements OnInit{
 	title = 'Gerbang Sulteng';
 	collapsedMenu:boolean = true;
-
+	apiUrl:any;
 	constructor(public authService: AuthService) {			
-		
+		this.apiUrl = environment.api.graphql;
 	}
 	ngOnInit() {			
 	}
