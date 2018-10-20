@@ -13,6 +13,7 @@
 			</div>
 		</div>
 		<div class="col-md-9 mt-3" style="min-height:400px;">
+			<p *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> Memuat...</p>
 			<div class="card" *ngIf="point">
 				<div class="card-header">
 					<h4><span class="fa fa-map-marker"></span> {{point.name}}</h4>

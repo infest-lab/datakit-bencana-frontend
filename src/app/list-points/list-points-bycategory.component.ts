@@ -22,6 +22,7 @@ export class ListPointsByCategoryComponent implements OnInit, OnDestroy {
   	points: any;
 	private originPoints: any;
 	querySearch: string;
+	loading:boolean=true;
 
 	constructor(private route: ActivatedRoute, private appService:AppService) { }
 
@@ -30,6 +31,7 @@ export class ListPointsByCategoryComponent implements OnInit, OnDestroy {
 			this.sub = this.appService.pointsByCategory(this.category).subscribe(({data}) => {
 				this.originPoints = data.pointsByCategory;
 				this.points = data.pointsByCategory;
+				this.loading = false;
 			});
 		}else{
 			this.route.params.subscribe(params => {
@@ -37,6 +39,7 @@ export class ListPointsByCategoryComponent implements OnInit, OnDestroy {
 				this.sub = this.appService.pointsByCategory(params.category).subscribe(({data}) => {
 					this.originPoints = data.pointsByCategory;
 					this.points = data.pointsByCategory;
+					this.loading = false;
 				});
 			});	
 		}			

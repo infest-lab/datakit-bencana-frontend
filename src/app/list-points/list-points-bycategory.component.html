@@ -1,10 +1,11 @@
 <div class="container-fluid" *ngIf="!partial">
+	<p *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> Memuat...</p>
 	<div class="row">
 		<div class="col-md-3 mt-3">
 			<div *ngIf="points">
 				<input type="text" placeholder="Ketik untuk mencari" name="search" class="form-control" (ngModel) = "querySearch" #searchQuery (keyup)="searchPoint(searchQuery.value)">				
-				<div class="list-group">
-					<div class="list-group-item bg-primary text-white mt-3">
+				<div class="list-group mt-3" style="max-height:500px; overflow-y: scroll;">
+					<div class="list-group-item bg-primary text-white">
 						<h5 class="card-title"><span class="fa fa-home"></span> {{category}}</h5>
 					</div>
 						<a class="list-group-item list-group-item-action" *ngFor="let point of points; let i=index" routerLink="/point/{{point.id}}" style="cursor: pointer;">
@@ -21,9 +22,10 @@
 </div>
 
 <div *ngIf="partial">
+	<p *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> Memuat...</p>
 	<div *ngIf="points">
 		<input type="text" placeholder="Ketik untuk mencari" name="search" class="form-control" (ngModel) = "querySearch" #searchQuery (keyup)="searchPoint(searchQuery.value)">				
-		<div class="list-group mt-3" style="max-height:600px; overflow: scroll;">
+		<div class="list-group mt-3" style="max-height:500px; overflow-y: scroll;">
 			<div class="list-group-item bg-primary text-white">
 				<h5 class="card-title"><span class="fa fa-home"></span> {{category}}</h5>
 			</div>
