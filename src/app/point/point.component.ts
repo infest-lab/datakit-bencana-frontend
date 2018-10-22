@@ -30,7 +30,7 @@ export class PointComponent implements OnInit, OnDestroy {
 	pointQuery: QueryRef<any>;
 	pointObs: Observable<any>;
 
-	constructor(private route: ActivatedRoute, private appService:AppService, private authService: AuthService, private deviceService: DeviceDetectorService) { }
+	constructor(private route: ActivatedRoute, private appService:AppService, private authService: AuthService, public deviceService: DeviceDetectorService) { }
 
 	ngOnInit() {		
 		this.route.params.subscribe(params => {

@@ -16,11 +16,13 @@ export class ListPointsComponent implements OnInit, OnDestroy {
   	points: any;
 	private originPoints: any;
 	querySearch: string;
+	loading:boolean=true;
 
 	constructor(private appService:AppService) { }
 
 	ngOnInit() {
 		this.sub = this.appService.listPoints().subscribe(({data}) => {
+			this.loading = false;
 			this.originPoints = data.points;
 			this.points = _.groupBy(data.points, function(num){
 				return num.category;
