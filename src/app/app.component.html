@@ -27,6 +27,17 @@
     </ul>
   </div>
 </nav>
+<div *ngIf="deviceService.isMobile()" class="mt-2 text-center text-secondary">
+  <a class="btn btn-md btn-primary text-white" *ngIf="!authService.isLoggedIn" (click)="authService.login()"><span class="fa fa-google"></span> Masuk untuk Kontribusi</a>
+  <div *ngIf="authService.isLoggedIn" class="card mx-3">
+    <div class="card-body text-center">
+      <img style="width:50px;" alt="{{authService.getUserName()}}" src="{{authService.getUserAvatar()}}">
+    </div>
+    <div class="card-footer">
+      {{authService.getUserName()}}
+    </div>
+  </div>
+</div>
 <router-outlet></router-outlet>
 <div style="height:50px;"></div>
 <nav class="navbar fixed-bottom navbar-light bg-light">

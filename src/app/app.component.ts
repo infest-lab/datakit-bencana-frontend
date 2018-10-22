@@ -1,5 +1,6 @@
 import { OnInit, Component } from '@angular/core';
 import { AuthService } from './auth/auth.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { environment } from '../environments/environment';
 
 @Component({
@@ -11,7 +12,7 @@ export class AppComponent implements OnInit{
 	title = 'Gerbang Sulteng';
 	collapsedMenu:boolean = true;
 	apiUrl:any;
-	constructor(public authService: AuthService) {			
+	constructor(public authService: AuthService, public deviceService: DeviceDetectorService) {			
 		this.apiUrl = environment.api.graphql;
 	}
 	ngOnInit() {			
