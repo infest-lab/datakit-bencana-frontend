@@ -1,6 +1,7 @@
 <div class="card bg-secondary text-white">
 	<div class="card-body">
-		<h4 class="card-title">Update Demografi <span (click)="cancel()" style="cursor: pointer;" class="fa fa-times pull-right"></span></h4>		
+		<span (click)="cancel()" style="cursor: pointer;" class="fa fa-times fa-2x pull-right"></span>
+		<h4 class="card-title">Update Demografi</h4>		
 		<div class="card-content">
 			<p *ngIf="error !== ''" class="alert alert-danger">{{error}}</p>
 			<p *ngIf="success !== ''" class="alert alert-success">#DEMOGRAPHY <strong>{{success}}</strong> dikirim</p>

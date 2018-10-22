@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AppService } from '../app.service';
 import { Promise } from 'bluebird';
@@ -24,7 +25,7 @@ export class ListPointsByCategoryComponent implements OnInit, OnDestroy {
 	querySearch: string;
 	loading:boolean=true;
 
-	constructor(private route: ActivatedRoute, private appService:AppService) { }
+	constructor(private route: ActivatedRoute, private appService:AppService, private deviceService: DeviceDetectorService) { }
 
 	ngOnInit() {
 		if(this.category != null){

@@ -1,5 +1,7 @@
+<p *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> Memuat...</p>
 <div *ngIf="points">
-	<input type="text" placeholder="Ketik untuk mencari" name="search" class="form-control" (ngModel) = "querySearch" #searchQuery (keyup)="searchPoint(searchQuery.value)">				
+	<input type="text" placeholder="Ketik untuk mencari" name="search" class="form-control" (ngModel) = "querySearch" #searchQuery (keyup)="searchPoint(searchQuery.value)">
+	<span class="fa fa-search text-primary" style="float: right; margin-right: 10px; margin-top: -28px; position: relative; z-index: 2;"></span>			
 	<div *ngFor="let cat of points | keyvalue">
 		<div class="list-group">
 			<div class="list-group-item bg-primary text-white mt-3">
@@ -7,7 +9,7 @@
 			</div>
 			<a class="list-group-item list-group-item-action" *ngFor="let point of cat.value; let i=index" routerLink="/point/{{point.id}}" style="cursor: pointer;">
 				<strong>{{i + 1}}. {{point.name}}</strong><br/>
-			  	<span class="text-muted small">{{point.address}}</span>				
+			  	<span class="text-muted small">{{point.address}}</span>			
 			</a>
 		</div>
 	</div>

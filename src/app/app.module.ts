@@ -17,8 +17,9 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { FullDateTimeFormatPipe } from './pipes/full-date-time-format.pipe';
-import { MatMenuModule, MatButtonModule } from '@angular/material';
+import { MatMenuModule, MatButtonModule, MatTabsModule } from '@angular/material';
 import { NoopAnimationPlayer } from '@angular/animations';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 import { AuthService } from './auth/auth.service';
 import { AppService } from './app.service';
 import { AppComponent } from './app.component';
@@ -68,7 +69,9 @@ import { ListPointsByCategoryComponent } from './list-points/list-points-bycateg
     ApolloModule,
     MatMenuModule,
     MatButtonModule,
-    BrowserAnimationsModule
+    MatTabsModule,
+    BrowserAnimationsModule,
+    DeviceDetectorModule.forRoot()
   ],
   providers: [
     AuthService,

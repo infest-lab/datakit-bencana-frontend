@@ -1,9 +1,12 @@
 <div class="container-fluid" *ngIf="!partial">
 	<p *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> Memuat...</p>
+	<a *ngIf="deviceService.isMobile()" class="btn btn-light btn-block mt-3 text-left text-primary" routerLink="/home"><span class="fa fa-arrow-left"></span> Home</a>
 	<div class="row">
-		<div class="col-md-3 mt-3">
+		<div class="col-md-3 mt-3 mb-4">
 			<div *ngIf="points">
 				<input type="text" placeholder="Ketik untuk mencari" name="search" class="form-control" (ngModel) = "querySearch" #searchQuery (keyup)="searchPoint(searchQuery.value)">				
+				<span class="fa fa-search text-primary" style="float: right; margin-right: 10px; margin-top: -28px; position: relative; z-index: 2;"></span>
+				
 				<div class="list-group mt-3" style="max-height:500px; overflow-y: scroll;">
 					<div class="list-group-item bg-primary text-white">
 						<h5 class="card-title"><span class="fa fa-home"></span> {{category}}</h5>
@@ -15,7 +18,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-9 mt-3" style="min-height:400px;">
+		<div *ngIf="!deviceService.isMobile()" class="col-md-9 mt-3" style="min-height:400px;">
 
 		</div>
 	</div>
@@ -25,6 +28,8 @@
 	<p *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> Memuat...</p>
 	<div *ngIf="points">
 		<input type="text" placeholder="Ketik untuk mencari" name="search" class="form-control" (ngModel) = "querySearch" #searchQuery (keyup)="searchPoint(searchQuery.value)">				
+		<span class="fa fa-search text-primary" style="float: right; margin-right: 10px; margin-top: -28px; position: relative; z-index: 2;"></span>
+				
 		<div class="list-group mt-3" style="max-height:500px; overflow-y: scroll;">
 			<div class="list-group-item bg-primary text-white">
 				<h5 class="card-title"><span class="fa fa-home"></span> {{category}}</h5>

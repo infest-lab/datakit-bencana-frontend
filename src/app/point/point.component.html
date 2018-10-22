@@ -1,6 +1,6 @@
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-3 mt-3">
+		<div class="col-md-3 mt-3" *ngIf="!deviceService.isMobile()">
 			<div *ngIf="displayForm">
 				<app-demand-form *ngIf="demandFormDisplay" (display)="demandForm($event)" [pointId]="point.id"><span class="fa fa-spinner fa-spin"></span></app-demand-form>
 				<app-supply-form *ngIf="supplyFormDisplay" (display)="supplyForm($event)" (refresh)=refresh($event) [pointId]="point.id"><span class="fa fa-spinner fa-spin"></span></app-supply-form>
@@ -12,9 +12,11 @@
 				<app-list-points-bycategory *ngIf="point" [category]="point?.category" [partial]="true"><span class="fa fa-spinner fa-spin"></span></app-list-points-bycategory>
 			</div>
 		</div>
-		<div class="col-md-9 mt-3" style="min-height:400px;">
-			<p *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> Memuat...</p>
-			<div class="card" *ngIf="point">
+		<p *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> Memuat...</p>
+		<div *ngIf="point" class="col-md-9 mt-3" style="min-height:400px;">
+			
+			<a *ngIf="deviceService.isMobile()" class="btn btn-light btn-block mb-3 text-left text-primary" routerLink="/points/{{point?.category}}"><span class="fa fa-arrow-left"></span> Daftar Titik {{point.category}}</a>
+			<div class="card">
 				<div class="card-header">
 					<h4><span class="fa fa-map-marker"></span> {{point.name}}</h4>
 					<small class="text-muted">{{point.address}}</small>
@@ -22,8 +24,28 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-md-6">
-							<!-- <div class="card"><div class="card-body"> -->
-							<table class="table table-striped">
+							<div class="card"><div class="card-body">
+							<div class="d-flex w-100 justify-content-between">
+								<span><strong>Kategori</strong></span>
+								<span>{{point?.category}}</span>
+							</div>
+							<div *ngIf="point.latitude !== ''" class="d-flex w-100 justify-content-between">
+								<span><strong>Lokasi</strong></span>
+								<span>{{point?.latitude}},{{point?.longitude}}</span>
+							</div>
+							<div *ngIf="point.survivors !== ''" class="d-flex w-100 justify-content-between">
+								<span><strong>Jumlah pengungsi awal</strong></span>
+								<span>{{point?.survivors}}</span>
+							</div>
+							<div *ngIf="point.phone !== ''" class="d-flex w-100 justify-content-between">
+								<span><strong>Kontak</strong></span>
+								<span>{{point?.contact}} - {{point?.phone}}</span>
+							</div>
+							<div *ngIf="point.notes !== ''" class="d-flex w-100 justify-content-between">
+								<span><strong>Keterangan</strong></span>
+								<span>{{point?.notes}}</span>
+							</div>	
+							<!-- <table class="table table-striped">
 								<tr>
 									<td><strong>Kategori</strong></td>
 									<td class="text-right">{{point?.category}}</td>
@@ -44,11 +66,17 @@
 									<td><strong>Keterangan</strong></td>
 									<td class="text-right">{{point?.notes}}</td>
 								</tr>						
-							</table>
-							<!-- </div></div> -->
+							</table> -->
+							</div></div>
 						</div>
 						<div class="col-md-6">
-							<div class="card"><div class="card-body">
+							<div *ngIf="deviceService.isMobile()">
+								<div *ngIf="displayForm" class="mb-5 mx-auto" style="position:relative;z-index:1000;width:100%;">
+									<app-demography-form *ngIf="demographyFormDisplay" (display)="demographyForm($event)" (refresh)=refresh($event) [pointId]="point.id" [demography]="point.lastDemography"><span class="fa fa-spinner fa-spin"></span></app-demography-form>
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-body">								
 								<button class="btn btn-primary btn-sm pull-right" (click)="updateDemography()">Update Demografi</button>
 								<h4>Demografi</h4>
 								<div class="mb-2 text-muted" *ngIf="point.lastDemography?.createdAt == null">Belum ada data demografi</div>
@@ -79,38 +107,13 @@
 										<span>Berkebutuhan khusus</span>
 										<span class="text-right">{{point.lastDemography?.difable}}</span>
 									</div>
-									<!-- <table class="table table-bordered mb-2">
-										<tr>
-											<td><strong>Perempuan</strong></td>
-											<td class="text-right">{{point.lastDemography?.female}}</td>
-										</tr>										
-										<tr>
-											<td><strong>Laki-Laki</strong></td>
-											<td class="text-right">{{point.lastDemography?.male}}</td>
-										</tr>
-										<tr>
-											<td><strong>Anak</strong></td>
-											<td class="text-right">{{point.lastDemography?.children}}</td>
-										</tr>
-										<tr>
-											<td><strong>Dewasa</strong></td>
-											<td class="text-right">{{point.lastDemography?.adult}}</td>
-										</tr>
-										<tr>
-											<td><strong>Lansia</strong></td>
-											<td class="text-right">{{point.lastDemography?.lansia}}</td>
-										</tr>
-										<tr>
-											<td><strong>Berkebutuhan khusus</strong></td>
-											<td class="text-right">{{point.lastDemography?.difable}}</td>
-										</tr>
-									</table> -->
 								</div>
 							</div></div>
 						</div>
 					</div>	
-					<hr>
-					<div class="row">
+					
+					<div class="row" *ngIf="!deviceService.isMobile()">
+						<hr>
 						<div class="col-md-4">
 							<div><a (click)="addDemand()" class="btn btn-danger btn-sm text-white mb-1"><span class="fa fa-plus fa-2x"></span></a></div>
 							<app-point-demands [pointId]="point?.id"><span class="fa fa-spinner fa-spin"></span></app-point-demands>
@@ -126,6 +129,47 @@
 					</div>
 				</div>
 			</div>
+			<!-- begin:Mobile view -->
+			<div *ngIf="deviceService.isMobile()" class="mt-3 mb-4">
+				<mat-tab-group>
+				  <mat-tab label="Kebutuhan">
+				  	<div *ngIf="displayForm" style="position:absolute;z-index:1000;width:100%;">
+						<app-demand-form *ngIf="demandFormDisplay" (display)="demandForm($event)" [pointId]="point.id"><span class="fa fa-spinner fa-spin"></span></app-demand-form>						
+					</div>
+				  	<div class="mt-3"><a (click)="addDemand()" class="btn btn-danger btn-sm text-white mb-1"><span class="fa fa-plus fa-2x"></span></a></div>
+							<app-point-demands [pointId]="point?.id"><span class="fa fa-spinner fa-spin"></span></app-point-demands>
+				  </mat-tab>
+				  <mat-tab label="Penyaluran">
+				  	<div *ngIf="displayForm" style="position:absolute;z-index:1000;width:100%;">
+						<app-supply-form *ngIf="supplyFormDisplay" (display)="supplyForm($event)" (refresh)=refresh($event) [pointId]="point.id"><span class="fa fa-spinner fa-spin"></span></app-supply-form>
+					</div>
+				  	<div class="mt-3"><a (click)="addSupply()" class="btn btn-success btn-sm text-white mb-1"><span class="fa fa-plus fa-2x"></span></a></div>
+							<app-point-supplies [pointId]="point?.id"><span class="fa fa-spinner fa-spin"></span></app-point-supplies>
+				  </mat-tab>
+				  <mat-tab label="Update Situasi">
+				  	<div *ngIf="displayForm" style="position:absolute;z-index:1000;width:100%;">
+						<app-activity-form *ngIf="activityFormDisplay" (display)="activityForm($event)" (refresh)=refresh($event) [pointId]="point.id"><span class="fa fa-spinner fa-spin"></span></app-activity-form>
+					</div>
+				  	<div class="mt-3"><a (click)="addActivity()" class="btn btn-info btn-sm text-white mb-1"><span class="fa fa-plus fa-2x"></span></a></div>
+							<app-point-activities [pointId]="point?.id"><span class="fa fa-spinner fa-spin"></span></app-point-activities>
+				  </mat-tab>
+				</mat-tab-group>
+				<!-- <ul class="nav nav-tabs">
+				  <li class="nav-item">
+				    <a class="nav-link active" href="#">Active</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link" href="#">Link</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link" href="#">Link</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link disabled" href="#">Disabled</a>
+				  </li>
+				</ul> -->
+			</div>
+			<!-- end:Mobile view -->
 		</div>
 	</div>
 </div>

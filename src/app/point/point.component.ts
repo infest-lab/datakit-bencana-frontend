@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subject, Observable, timer, Subscription } from 'rxjs';
 import { QueryRef } from 'apollo-angular';
 import {map} from 'rxjs/operators';
@@ -29,7 +30,7 @@ export class PointComponent implements OnInit, OnDestroy {
 	pointQuery: QueryRef<any>;
 	pointObs: Observable<any>;
 
-	constructor(private route: ActivatedRoute, private appService:AppService, private authService: AuthService) { }
+	constructor(private route: ActivatedRoute, private appService:AppService, private authService: AuthService, private deviceService: DeviceDetectorService) { }
 
 	ngOnInit() {		
 		this.route.params.subscribe(params => {
